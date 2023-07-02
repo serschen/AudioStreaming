@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "515693574625",
+    "project_id": "audio-streaming-7c505",
+    "storage_bucket": "audio-streaming-7c505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515693574625:android:3f6853948f5ad65346faa0",
+        "android_client_info": {
+          "package_name": "com.appdev.audiostreaming"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515693574625-09ntimeej9q04fvt1sm12ut3ihclbj2f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7-Hwq0riO5WWyr1kS9jRIKVzhbrRBmNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515693574625-09ntimeej9q04fvt1sm12ut3ihclbj2f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
