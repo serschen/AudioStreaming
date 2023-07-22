@@ -18,7 +18,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
-import java.lang.String
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,16 +38,7 @@ class MainActivity : AppCompatActivity() {
                     Log.wtf("tag", it)
                 }
                 .addOnSuccessListener {
-                    /*val j = JSONObject(it.data.toString())
-
-                    val gson = Gson()
-                    val itemType = object : TypeToken<ArrayList<Song>>() {}.type
-                    val itemList = gson.fromJson<ArrayList<Song>>(j.get("songs").toString(), itemType)*/
-
-                    val itemList:ArrayList<Song> = ArrayList()
-
-                    itemList.add(Song("Collection1","Artist1","Rick Astley","/Music/nevergonnagiveyouup.mp3","Never gonna give you up",212))
-
+                    val itemList:ArrayList<HashMap<String, Any>> = it.data as ArrayList<HashMap<String, Any>>
 
                     val rwChat: RecyclerView = findViewById(R.id.recyclerView)
                     rwChat.layoutManager = LinearLayoutManager(this)
