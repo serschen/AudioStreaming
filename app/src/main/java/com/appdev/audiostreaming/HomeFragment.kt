@@ -37,16 +37,7 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val itemList:ArrayList<Song> = ArrayList()
 
-        itemList.add(Song("Collection1","Artist1","Rick Astley","/Music/nevergonnagiveyouup.mp3","Never gonna give you up",212))
-
-        val rwChat: RecyclerView? = view?.findViewById(R.id.homerecyclerview)
-        rwChat?.layoutManager = LinearLayoutManager(this.context)
-
-        val songAdapter:SongAdapter = SongAdapter(itemList)
-
-        rwChat?.adapter = songAdapter
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 

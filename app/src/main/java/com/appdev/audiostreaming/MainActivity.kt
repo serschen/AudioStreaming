@@ -8,9 +8,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
@@ -22,10 +24,31 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
+    lateinit var bottomNav : BottomNavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        loadFragment(HomeFragment())
+        bottomNav = findViewById(R.id.bottomNav) as BottomNavigationView
+        bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.home -> {
+                    loadFragment(HomeFragment())
+                    true
+                }
+                R.id.search -> {
+                    loadFragment(SearchFragment())
+                    true
+                }
+                R.id.library -> {
+                    loadFragment(LibraryFragment())
+                    true
+                }
+                else -> {false}
+            }
+        }
 
         if(auth.currentUser == null){
             redirectStartActivity()
@@ -61,7 +84,11 @@ class MainActivity : AppCompatActivity() {
                 redirectStartActivity()
             }
     }
-
+    private  fun loadFragment(fragment: Fragment){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container,fragment)
+        transaction.commit()
+    }
     private fun redirectStartActivity(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
