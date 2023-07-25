@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="4dp"
+    android:background="#3CC2FF"
     android:orientation="vertical"
     tools:context=".SettingFragment">
 
@@ -25,10 +26,11 @@
 
     <ImageView
         android:id="@+id/logosettings"
-        android:layout_width="307dp"
-        android:layout_height="282dp"
+        android:layout_width="280dp"
+        android:layout_height="240dp"
         android:layout_gravity="center"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/startscreen_note" />
 
     <LinearLayout
@@ -87,7 +89,7 @@
         android:id="@+id/btn_change_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="30dp"
         android:text="Change Design" />
 
 

@@ -5,4 +5,9 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="artist_page">Artist Page</string>
+    <string name="album_name">Album Name</string>
+    <string name="album_details">Album Details</string>
+    <string name="album_container">AlbumContainer</string>
+    <string name="search_name">Search</string>
+    <string name="logout_btn">Logout</string>
 </resources>

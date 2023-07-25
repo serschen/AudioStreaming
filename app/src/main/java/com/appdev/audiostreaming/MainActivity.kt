@@ -1,12 +1,11 @@
 package com.appdev.audiostreaming
 
 import android.content.Intent
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.media.MediaPlayer.OnPreparedListener
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,15 +15,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     lateinit var bottomNav : BottomNavigationView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,5 +89,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onBackPressed() {
+        //loadFragment(HomeFragment())
     }
 }

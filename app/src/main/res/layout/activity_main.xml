@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/back_color">
+
 
     <EditText
         android:id="@+id/txtSearchSong"
@@ -13,14 +15,15 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="13dp"
         android:ems="10"
-        android:hint="Search"
+        android:hint="@string/search_name"
         android:inputType="textPersonName"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.86"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -39,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:backgroundTint="#FF0000"
-        android:text="Logout"
+        android:text="@string/logout_btn"
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/txtSearchSong"
         app:layout_constraintStart_toStartOf="parent" />
