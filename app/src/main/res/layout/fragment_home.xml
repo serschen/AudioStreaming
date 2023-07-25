@@ -21,8 +21,8 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="46dp"
+                android:layout_width="345dp"
+                android:layout_height="93dp"
                 android:layout_weight="1"
                 android:elegantTextHeight="true"
                 android:text="Good Morning!"
@@ -34,9 +34,9 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/settings"
+                android:layout_width="57dp"
+                android:layout_height="76dp"
                 android:layout_marginRight="10dp"
                 android:padding="10dp"
                 android:src="@drawable/baseline_settings_24" />
@@ -54,8 +54,8 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="48dp"
-        android:layout_height="41dp"
+        android:layout_width="65dp"
+        android:layout_height="64dp"
         android:src="@drawable/baseline_more_time_24" />
 
     <androidx.recyclerview.widget.RecyclerView

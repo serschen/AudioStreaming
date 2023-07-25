@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -22,6 +24,8 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var settingsImage: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,18 +40,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+       val v = inflater.inflate(R.layout.fragment_home, container,false)
 
-        val itemList:ArrayList<Song> = ArrayList()
+        settingsImage = v?.findViewById(R.id.settings)!!
+        settingsImage.setOnClickListener{
+            val transaction: FragmentTransaction = requireActivity().supportFragmentManager!!.beginTransaction()
+            transaction.replace(R.id.container, SettingFragment())
+            transaction.commit()
+        }
 
-        itemList.add(Song("Collection1","Artist1","Rick Astley","/Music/nevergonnagiveyouup.mp3","Never gonna give you up",212))
 
-        val rwChat: RecyclerView? = view?.findViewById(R.id.homerecyclerview)
-        rwChat?.layoutManager = LinearLayoutManager(this.context)
-
-        val songAdapter:SongAdapter = SongAdapter(itemList)
-
-        rwChat?.adapter = songAdapter
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return v
     }
 
     companion object {
