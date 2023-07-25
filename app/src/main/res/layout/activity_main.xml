@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/back_color">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
 
     <EditText
@@ -14,27 +14,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="13dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/search_name"
         android:inputType="textPersonName"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.86"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" />
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="1dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSearchSong" />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btnLogout"
@@ -43,28 +34,20 @@
         android:layout_marginStart="16dp"
         android:backgroundTint="#FF0000"
         android:text="@string/logout_btn"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/txtSearchSong"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNav"
-        />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#00FFFFFF" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu"
-        android:scrollIndicators="left"/>
+        android:scrollIndicators="left"
+        app:menu="@menu/menu" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
