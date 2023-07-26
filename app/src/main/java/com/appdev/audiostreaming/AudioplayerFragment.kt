@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import com.google.firebase.storage.FirebaseStorage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +23,8 @@ class AudioplayerFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var txtName: TextView? = null
+    var txtArtist: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +39,34 @@ class AudioplayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val mediaplayer:MediaPlayer? = MediaPlayer()
+        val v = inflater.inflate(R.layout.fragment_audioplayer, container, false)
+        txtName = v.findViewById(R.id.textView6)
+        txtArtist = v.findViewById(R.id.textView11)
 
-        return inflater.inflate(R.layout.fragment_audioplayer, container, false)
+        val extras = requireActivity().intent.extras
+
+        if(extras != null){
+            val song:Map<String, Any> = extras.getSerializable("map") as Map<String, Any>
+
+            txtName?.text = song["name"]?.toString() ?: "Name not found"
+            txtArtist?.text = song["artistName"]?.toString() ?: "Artist not found"
+
+            val path = song["path"]?.toString() ?: ""
+
+            if(path != "") {
+                val storage = FirebaseStorage.getInstance()
+                storage.reference.child(path).downloadUrl.addOnSuccessListener {
+                    val mediaPlayer = MediaPlayer()
+                    mediaPlayer.setDataSource(it.toString())
+                    mediaPlayer.setOnPreparedListener { player ->
+                        player.start()
+                    }
+                    mediaPlayer.prepareAsync()
+                }
+            }
+        }
+
+        return v
     }
 
     companion object {
