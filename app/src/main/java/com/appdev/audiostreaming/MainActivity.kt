@@ -26,54 +26,35 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        loadFragment(HomeFragment())
-        bottomNav = findViewById(R.id.bottomNav)
-        bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> {
-                    loadFragment(HomeFragment())
-                    true
-                }
-                R.id.search -> {
-                    loadFragment(SearchFragment())
-                    true
-                }
-                R.id.library -> {
-                    loadFragment(LibraryFragment())
-                    true
-                }
-                else -> {false}
-            }
-        }
 
         if(auth.currentUser == null){
             redirectStartActivity()
         }else{
-            //fetch all songs with cloud services
-            FirebaseFunctions.getInstance()
-                .getHttpsCallable("getAllSongs")
-                .call()
-                .addOnFailureListener {
-                    Log.wtf("tag", it)
+            loadFragment(HomeFragment())
+            bottomNav = findViewById(R.id.bottomNav)
+            bottomNav.setOnItemSelectedListener {
+                when (it.itemId) {
+                    R.id.home -> {
+                        loadFragment(HomeFragment())
+                        true
+                    }
+                    R.id.search -> {
+                        loadFragment(SearchFragment())
+                        true
+                    }
+                    R.id.library -> {
+                        loadFragment(LibraryFragment())
+                        true
+                    }
+                    else -> {false}
                 }
-                .addOnSuccessListener {
-                    val itemList:ArrayList<HashMap<String, Any>> = it.data as ArrayList<HashMap<String, Any>>
+            }
 
-                    val rwChat: RecyclerView = findViewById(R.id.recyclerView)
-                    rwChat.layoutManager = LinearLayoutManager(this)
-
-                    val songAdapter:SongAdapter = SongAdapter(itemList)
-
-                    rwChat.adapter = songAdapter
-                }
-        }
-
-        findViewById<Button>(R.id.btnLogout).setOnClickListener{
-            logout()
+            Toast.makeText(this, "" + auth.currentUser?.uid, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun logout() {
+    fun logout() {
         AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener {
