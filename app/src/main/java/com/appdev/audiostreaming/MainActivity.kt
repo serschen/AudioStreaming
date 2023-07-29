@@ -4,7 +4,10 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -37,6 +40,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val filter = IntentFilter(ACTION_UPDATE_UI)
+        registerReceiver(updateUIReceiver, filter)
 
         createChannel()
 
@@ -203,5 +209,22 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container,SongInfoFragment())
         transaction.commit()
+    }
+
+    companion object {
+        const val ACTION_UPDATE_UI = "com.example.appdev.audiostreaming.UPDATE_UI"
+    }
+
+    private val updateUIReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == ACTION_UPDATE_UI) {
+                val isPlaying = intent.getBooleanExtra("isPlaying", false)
+                val title = intent.getStringExtra("title")
+                val artist = intent.getStringExtra("artist")
+
+                findViewById<TextView>(R.id.song_info).text = "$title - $artist"
+                findViewById<ImageView>(R.id.play_button).setImageResource(if(isPlaying) R.drawable.pause else R.drawable.baseline_play_arrow_24)
+            }
+        }
     }
 }

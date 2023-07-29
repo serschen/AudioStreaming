@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
+import android.util.Log
 import androidx.core.net.toUri
 import com.appdev.audiostreaming.MainActivity
 import com.appdev.audiostreaming.R
@@ -16,6 +17,8 @@ class AudioPlayerService : Service() {
     }
 
     companion object {
+        var title: String = ""
+        var artist: String = ""
         var time: Int = 0
         var isPlaying = false
         var uri: Uri? = null
@@ -88,5 +91,14 @@ class AudioPlayerService : Service() {
             isPlaying = true
             player.start()
         }
+        updateUI()
+    }
+
+    private fun updateUI() {
+        val intent = Intent(MainActivity.ACTION_UPDATE_UI)
+        intent.putExtra("isPlaying", isPlaying)
+        intent.putExtra("title", title)
+        intent.putExtra("artist", artist)
+        sendBroadcast(intent)
     }
 }

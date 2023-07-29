@@ -37,7 +37,7 @@ class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>) : RecyclerV
         holder.searchResultLayout.setOnClickListener{v ->
             val intent = Intent(v.context, AudioPlayerService::class.java)
             intent.putExtra("map", songs[position])
-            intent.putExtra("action", "chan")
+            intent.action = "chan"
             v.context.startService(intent)
 
 
