@@ -7,11 +7,18 @@ import android.net.Uri
 import android.os.IBinder
 import android.util.Log
 import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.appdev.audiostreaming.MainActivity
 import com.appdev.audiostreaming.R
+import com.appdev.audiostreaming.SongAdapter
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
 class AudioPlayerService : Service() {
+
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
@@ -80,7 +87,7 @@ class AudioPlayerService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun play(){
+    private fun play() {
         if (isPlaying) {
             time = player.currentPosition
             isPlaying = false
@@ -101,4 +108,5 @@ class AudioPlayerService : Service() {
         intent.putExtra("artist", artist)
         sendBroadcast(intent)
     }
+
 }
