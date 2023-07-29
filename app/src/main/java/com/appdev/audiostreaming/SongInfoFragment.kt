@@ -16,8 +16,6 @@ class SongInfoFragment : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_song_info, container, false)
 
-        v.findViewById<TextView>(R.id.song_title).text =
-
         return v
     }
 }
