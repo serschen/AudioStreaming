@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.`as`.AudioPlayerService
 
 class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>) : RecyclerView.Adapter<SongAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,9 +35,12 @@ class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>) : RecyclerV
         holder.txtArtist?.text = songs[position]["artistName"].toString()
 
         holder.searchResultLayout.setOnClickListener{v ->
-            val intent = Intent(v.context, PlayerActivity::class.java)
+            val intent = Intent(v.context, AudioPlayerService::class.java)
             intent.putExtra("map", songs[position])
-            v.context.startActivity(intent)
+            intent.putExtra("action", "chan")
+            v.context.startService(intent)
+
+
         }
     }
 }
