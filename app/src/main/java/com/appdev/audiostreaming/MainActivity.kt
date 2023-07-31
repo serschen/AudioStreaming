@@ -151,10 +151,6 @@ class MainActivity : AppCompatActivity() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun updateNotification(info: String, isPlaying: Boolean){
-        var cut = info.split(' ')
-        updateNotification(cut[0], cut[1], isPlaying)
-    }
     fun updateNotification(title: String, artist: String, isPlaying: Boolean) {
         val prevIntent = createPendingIntent("prev")
         val backIntent = createPendingIntent("back")
@@ -217,7 +213,7 @@ class MainActivity : AppCompatActivity() {
                 val title = intent.getStringExtra("title")
                 val artist = intent.getStringExtra("artist")
 
-                findViewById<TextView>(R.id.song_info).text = "$title - $artist"
+                findViewById<TextView>(R.id.song_info).setText("$title - $artist")
                 findViewById<ImageView>(R.id.play_button).setImageResource(if(isPlaying) R.drawable.pause else R.drawable.baseline_play_arrow_24)
             }
         }

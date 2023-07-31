@@ -9,9 +9,7 @@ import android.util.Log
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.appdev.audiostreaming.MainActivity
-import com.appdev.audiostreaming.R
-import com.appdev.audiostreaming.SongAdapter
+import com.appdev.audiostreaming.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
@@ -123,6 +121,9 @@ class AudioPlayerService : Service() {
         if (extras != null) {
             val song: Map<String, Any> = extras.getSerializable("map") as Map<String, Any>
 
+            title = song["name"].toString()
+            artist = song["artistName"].toString()
+
             val path = song["path"]?.toString() ?: ""
 
             if (path != "") {
@@ -134,6 +135,7 @@ class AudioPlayerService : Service() {
                 }
             }
         }
+        updateUI()
     }
 
     private fun playSong(position: Int) {
@@ -170,5 +172,12 @@ class AudioPlayerService : Service() {
         intent.putExtra("title", title)
         intent.putExtra("artist", artist)
         sendBroadcast(intent)
+
+        val intent2 = Intent(SongInfoFragment.ACTION_UPDATE_UI) // Corrected to use intent2 instead of intent
+        intent2.putExtra("isPlaying", isPlaying)
+        intent2.putExtra("title", title)
+        intent2.putExtra("artist", artist)
+        sendBroadcast(intent2)
     }
+
 }
