@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     lateinit var bottomNav : BottomNavigationView
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -141,8 +139,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /////////////////////////////////////
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val id = "channel_id"
@@ -155,10 +151,6 @@ class MainActivity : AppCompatActivity() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun updateNotifivation(info: String, isPlaying: Boolean){
-        var cut = info.split(' ')
-        updateNotification(cut[0], cut[1], isPlaying)
-    }
     fun updateNotification(title: String, artist: String, isPlaying: Boolean) {
         val prevIntent = createPendingIntent("prev")
         val backIntent = createPendingIntent("back")
@@ -176,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                 R.drawable.pause
             } else{
                 R.drawable.baseline_play_arrow_24
-            }, "Play/Pause", playIntent)
+            }, if(isPlaying) "Pause" else "Play", playIntent)
             .addAction(R.drawable.baseline_arrow_forward_ios_24, "Forward", forwIntent)
             .addAction(R.drawable.baseline_skip_next_24, "Next", nextIntent)
 
@@ -214,7 +206,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATE_UI = "com.example.appdev.audiostreaming.UPDATE_UI"
     }
-
     private val updateUIReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == ACTION_UPDATE_UI) {
@@ -222,7 +213,7 @@ class MainActivity : AppCompatActivity() {
                 val title = intent.getStringExtra("title")
                 val artist = intent.getStringExtra("artist")
 
-                findViewById<TextView>(R.id.song_info).text = "$title - $artist"
+                findViewById<TextView>(R.id.song_info).setText("$title - $artist")
                 findViewById<ImageView>(R.id.play_button).setImageResource(if(isPlaying) R.drawable.pause else R.drawable.baseline_play_arrow_24)
             }
         }
