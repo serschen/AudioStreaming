@@ -26,13 +26,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if(Firebase.auth.currentUser != null){
+        if (Firebase.auth.currentUser != null) {
             redirectMainActivity()
-        }else{
+        } else {
             //show Login
         }
 
-        findViewById<Button>(R.id.btnLogin).setOnClickListener{
+        findViewById<Button>(R.id.btnLogin).setOnClickListener {
             createSignInIntent()
         }
     }

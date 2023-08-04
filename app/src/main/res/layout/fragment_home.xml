@@ -65,6 +65,14 @@
             android:layout_width="100dp"
             android:layout_height="69dp"
             android:src="@drawable/baseline_play_arrow_24" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animation_lkwlpi5k"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -2,11 +2,11 @@ package com.appdev.audiostreaming
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,15 +45,15 @@ class AudioplayerFragment : Fragment() {
 
         val extras = requireActivity().intent.extras
 
-        if(extras != null){
-            val song:Map<String, Any> = extras.getSerializable("map") as Map<String, Any>
+        if (extras != null) {
+            val song: Map<String, Any> = extras.getSerializable("map") as Map<String, Any>
 
             txtName?.text = song["name"]?.toString() ?: "Name not found"
             txtArtist?.text = song["artistName"]?.toString() ?: "Artist not found"
 
             val path = song["path"]?.toString() ?: ""
 
-            if(path != "") {
+            if (path != "") {
                 val storage = FirebaseStorage.getInstance()
                 storage.reference.child(path).downloadUrl.addOnSuccessListener {
                     val mediaPlayer = MediaPlayer()

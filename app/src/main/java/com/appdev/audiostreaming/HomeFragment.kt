@@ -32,9 +32,8 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var settingsImage: ImageView
-    private lateinit var playbtnImage:ImageView
+    private lateinit var playbtnImage: ImageView
     private lateinit var clockImg: ImageView
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,21 +52,23 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-       val v = inflater.inflate(R.layout.fragment_home, container,false)
+        val v = inflater.inflate(R.layout.fragment_home, container, false)
 
         settingsImage = v?.findViewById(R.id.settings)!!
         clockImg = v?.findViewById(R.id.clockIcon)!!
-        clockImg.setOnClickListener{
+        clockImg.setOnClickListener {
             showMsg("This is some Message for u! ;)")
         }
-        settingsImage.setOnClickListener{
-            val transaction: FragmentTransaction = requireActivity().supportFragmentManager!!.beginTransaction()
+        settingsImage.setOnClickListener {
+            val transaction: FragmentTransaction =
+                requireActivity().supportFragmentManager!!.beginTransaction()
             transaction.replace(R.id.container, SettingFragment())
             transaction.commit()
         }
         playbtnImage = v?.findViewById(R.id.imageViewPlayBtn)!!
-        playbtnImage.setOnClickListener{
-            val transaction: FragmentTransaction = requireActivity().supportFragmentManager!!.beginTransaction()
+        playbtnImage.setOnClickListener {
+            val transaction: FragmentTransaction =
+                requireActivity().supportFragmentManager!!.beginTransaction()
             transaction.replace(R.id.container, AudioplayerFragment())
             transaction.commit()
         }
@@ -80,12 +81,13 @@ class HomeFragment : Fragment() {
                 Log.wtf("tag", it)
             }
             .addOnSuccessListener {
-                val itemList:ArrayList<HashMap<String, Any>> = it.data as ArrayList<HashMap<String, Any>>
+                val itemList: ArrayList<HashMap<String, Any>> =
+                    it.data as ArrayList<HashMap<String, Any>>
 
                 val rwChat: RecyclerView = v.findViewById(R.id.homerecyclerview)
                 rwChat.layoutManager = LinearLayoutManager(this.requireContext())
 
-                val songAdapter:SongAdapter = SongAdapter(itemList)
+                val songAdapter: SongAdapter = SongAdapter(itemList)
 
                 rwChat.adapter = songAdapter
             }
@@ -113,7 +115,7 @@ class HomeFragment : Fragment() {
             }
     }
 
-    private fun showMsg(message:String){
-        Toast.makeText(requireContext(),"Last played Songs..", Toast.LENGTH_LONG).show()
+    private fun showMsg(message: String) {
+        Toast.makeText(requireContext(), "Last played Songs..", Toast.LENGTH_LONG).show()
     }
 }

@@ -33,12 +33,14 @@ class SettingFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_setting, container, false)
 
-        v.findViewById<Button>(R.id.btnLogoutSettings).setOnClickListener{
+        v.findViewById<Button>(R.id.btnLogoutSettings).setOnClickListener {
             logout()
         }
 
@@ -59,12 +61,13 @@ class SettingFragment : Fragment() {
          * @return A new instance of fragment SettingFragment.
          */
         // TODO: Rename and change types and number of parameters
-        @JvmStatic fun newInstance(param1: String, param2: String) =
-                SettingFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            SettingFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
+            }
     }
 }

@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("CustomSplashScreen")
-class LaunchActivity:AppCompatActivity() {
+class LaunchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Send user to MainActivity as soon as this activity loads

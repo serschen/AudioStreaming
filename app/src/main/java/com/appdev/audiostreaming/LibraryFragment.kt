@@ -52,7 +52,7 @@ class LibraryFragment : Fragment() {
 
         if (totalNum != null) {
             txt.setText(totalNum.toString())
-        }else{
+        } else {
             txt.setText("0")
         }
         return root
