@@ -1,5 +1,6 @@
 package com.appdev.audiostreaming
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +31,10 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var settingsImage: ImageView
-    lateinit var playbtnImage:ImageView
+    private lateinit var settingsImage: ImageView
+    private lateinit var playbtnImage:ImageView
+    private lateinit var clockImg: ImageView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +56,10 @@ class HomeFragment : Fragment() {
        val v = inflater.inflate(R.layout.fragment_home, container,false)
 
         settingsImage = v?.findViewById(R.id.settings)!!
+        clockImg = v?.findViewById(R.id.clockIcon)!!
+        clockImg.setOnClickListener{
+            showMsg("This is some Message for u! ;)")
+        }
         settingsImage.setOnClickListener{
             val transaction: FragmentTransaction = requireActivity().supportFragmentManager!!.beginTransaction()
             transaction.replace(R.id.container, SettingFragment())
@@ -102,5 +111,9 @@ class HomeFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun showMsg(message:String){
+        Toast.makeText(requireContext(),"Last played Songs..", Toast.LENGTH_LONG).show()
     }
 }
