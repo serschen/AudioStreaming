@@ -1,0 +1,58 @@
+package com.appdev.audiostreaming
+
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.`as`.AudioPlayerService
+
+class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
+                    private val albums:ArrayList<HashMap<String, Any>>,
+                    private val artists:ArrayList<HashMap<String, Any>>) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val txtName: TextView? = itemView.findViewById(R.id.txtName)
+        val txtArtist: TextView? = itemView.findViewById(R.id.txtArtist)
+        val searchResultLayout:LinearLayout = itemView.findViewById(R.id.searchResultLayout)
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_result, parent, false)
+
+
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return this.songs.size + this.albums.size + this.artists.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        //val song:Song = songs[position]
+
+        //holder.txtName?.text = song.name
+        //holder.txtArtist?.text = song.artistName
+
+        if(position < songs.size){
+            holder.txtName?.text = songs[position]["name"].toString()
+            holder.txtArtist?.text = songs[position]["artistName"].toString()
+
+            holder.searchResultLayout.setOnClickListener{v ->
+                val intent = Intent(v.context, AudioPlayerService::class.java)
+                intent.putExtra("map", songs[position])
+                intent.putExtra("pos", position)
+                intent.action = "chan"
+                v.context.startService(intent)
+            }
+        }else if(position < (songs.size + albums.size)){
+            holder.txtName?.text = albums[position - songs.size]["name"].toString()
+            holder.txtArtist?.text = albums[position - songs.size]["type"].toString()
+            //open AlbumFragment
+        }else {
+            holder.txtName?.text = artists[position - (songs.size + albums.size)]["name"].toString()
+            holder.txtArtist?.text = "Artist"
+            //open ArtistFragment
+        }
+    }
+}
