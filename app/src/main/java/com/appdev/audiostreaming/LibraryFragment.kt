@@ -1,11 +1,14 @@
 package com.appdev.audiostreaming
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +24,8 @@ class LibraryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var txt: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +37,25 @@ class LibraryFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library, container, false)
+        val root = inflater.inflate(R.layout.fragment_library, container, false)
+
+        recyclerView = root?.findViewById(R.id.recyclerLibrary)!!
+        val totalNum = recyclerView.adapter?.itemCount
+
+        txt = root?.findViewById(R.id.numSongs)!!
+
+        if (totalNum != null) {
+            txt.setText(totalNum.toString())
+        }else{
+            txt.setText("0")
+        }
+        return root
     }
 
     companion object {
