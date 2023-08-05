@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -81,7 +82,7 @@ class SearchFragment : Fragment() {
                 val rwChat: RecyclerView = v.findViewById(R.id.searchrecycler)
                 rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = SearchAdapter(songs, albums, artists)
+                val songAdapter = SearchAdapter(songs, albums, artists, requireActivity().supportFragmentManager)
 
                 rwChat.adapter = songAdapter
             }

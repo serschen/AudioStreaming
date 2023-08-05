@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.`as`.AudioPlayerService
 
 class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
                     private val albums:ArrayList<HashMap<String, Any>>,
-                    private val artists:ArrayList<HashMap<String, Any>>) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+                    private val artists:ArrayList<HashMap<String, Any>>,
+                    private val fragmentManager:FragmentManager
+) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtName: TextView? = itemView.findViewById(R.id.txtName)
-        val txtArtist: TextView? = itemView.findViewById(R.id.txtArtist)
+        val txtName: TextView? = itemView.findViewById(R.id.txtResultName)
+        val txtArtist: TextView? = itemView.findViewById(R.id.txtResultArtist)
         val searchResultLayout:LinearLayout = itemView.findViewById(R.id.searchResultLayout)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,13 +49,31 @@ class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
                 v.context.startService(intent)
             }
         }else if(position < (songs.size + albums.size)){
-            holder.txtName?.text = albums[position - songs.size]["name"].toString()
-            holder.txtArtist?.text = albums[position - songs.size]["type"].toString()
+            val pos = position - songs.size
+            val artistName = songs[pos]["artistName"].toString()
+            val albumName = albums[pos]["name"].toString()
+            val type = albums[pos]["type"].toString()
+            val id = albums[pos]["id"].toString()
+
+            holder.txtName?.text = albumName
+            holder.txtArtist?.text = type
             //open AlbumFragment
+            holder.searchResultLayout.setOnClickListener{v ->
+                val transaction = fragmentManager.beginTransaction()
+                transaction.add(android.R.id.content , CollectionFragment.newInstance(id, artistName, albumName))
+                transaction.commit()
+            }
         }else {
-            holder.txtName?.text = artists[position - (songs.size + albums.size)]["name"].toString()
+            val pos = position - (songs.size + albums.size)
+            holder.txtName?.text = artists[pos]["name"].toString()
             holder.txtArtist?.text = "Artist"
+            val id = artists[pos]["id"].toString()
             //open ArtistFragment
+            holder.searchResultLayout.setOnClickListener{v ->
+                val transaction = fragmentManager.beginTransaction()
+                transaction.add(android.R.id.content , ArtistFragment.newInstance(id))
+                transaction.commit()
+            }
         }
     }
 }

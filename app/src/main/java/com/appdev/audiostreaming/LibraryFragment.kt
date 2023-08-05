@@ -58,7 +58,7 @@ class LibraryFragment : Fragment() {
                 val rwChat: RecyclerView = v.findViewById(R.id.rvFav)
                 rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = SongAdapter(itemList)
+                val songAdapter = SongAdapter(itemList, true)
 
                 rwChat.adapter = songAdapter
             }
