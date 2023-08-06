@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.appdev.audiostreaming.lukas.AudioPlayerService
+import com.appdev.audiostreaming.lukas.AudioPlayerService
 
 class SongInfoFragment : Fragment() {
 
@@ -20,7 +21,7 @@ class SongInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_song_info, container, false)
+        val v = inflater.inflate(R.layout.fragment_song_info, container, false)
         view = v
         view.findViewById<TextView>(R.id.song_title).setText(AudioPlayerService.title)
         view.findViewById<TextView>(R.id.song_artist).setText(AudioPlayerService.artist)
@@ -37,7 +38,6 @@ class SongInfoFragment : Fragment() {
     private val updateUIReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == ACTION_UPDATE_UI) {
-                val isPlaying = intent.getBooleanExtra("isPlaying", false)
                 val title = intent.getStringExtra("title")
                 val artist = intent.getStringExtra("artist")
 

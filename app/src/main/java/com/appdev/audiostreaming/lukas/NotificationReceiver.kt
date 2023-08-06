@@ -1,4 +1,4 @@
-package com.example.`as`
+package com.appdev.audiostreaming.lukas
 
 import android.content.BroadcastReceiver
 import android.content.Context

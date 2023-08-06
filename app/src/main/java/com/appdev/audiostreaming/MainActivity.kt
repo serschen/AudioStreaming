@@ -27,6 +27,8 @@ import com.appdev.audiostreaming.R.id.linearLayout
 import com.appdev.audiostreaming.R.layout.activity_main
 import com.appdev.audiostreaming.lukas.AudioPlayerService
 import com.example.`as`.NotificationReceiver
+import com.appdev.audiostreaming.lukas.AudioPlayerService
+import com.appdev.audiostreaming.lukas.NotificationReceiver
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth

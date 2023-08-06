@@ -11,6 +11,7 @@ import com.appdev.audiostreaming.SongInfoFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
+import com.appdev.audiostreaming.*
 import com.google.firebase.storage.FirebaseStorage
 
 class AudioPlayerService : Service() {
@@ -19,23 +20,9 @@ class AudioPlayerService : Service() {
         return null
     }
 
-    private lateinit var itemList:ArrayList<HashMap<String, Any>>
-
     override fun onCreate() {
         super.onCreate()
-        FirebaseFunctions.getInstance()
-            .getHttpsCallable("getAllSongs?userId=" + Firebase.auth.currentUser?.uid)
-            .call()
-            .addOnFailureListener {
-                Log.wtf("tag", it)
-            }
-            .addOnSuccessListener {
-                itemList = it.data as ArrayList<HashMap<String, Any>>
-            }
-
         player = MediaPlayer()
-
-
     }
 
     companion object {
@@ -76,7 +63,7 @@ class AudioPlayerService : Service() {
     }
 
     private fun previous() {
-        position = (position - 1 + itemList.size) % itemList.size
+        position = (position - 1 + Songs.itemList.size) % Songs.itemList.size
         playSong(position)
     }
 
@@ -137,8 +124,8 @@ class AudioPlayerService : Service() {
     }
 
     private fun playSong(position: Int) {
-        if (position >= 0 && position < itemList.size) {
-            val song = itemList[position]
+        if (position >= 0 && position < Songs.itemList.size) {
+            val song = Songs.itemList[position]
             val path = song["path"]?.toString() ?: ""
             if (path != "") {
                 val storage = FirebaseStorage.getInstance()
@@ -149,7 +136,6 @@ class AudioPlayerService : Service() {
                     player.setDataSource(this, uri!!)
                     player.prepare()
                     player.setOnCompletionListener {
-                        // When the current song ends, play the next song
                         next()
                     }
                     player.start()
@@ -160,7 +146,7 @@ class AudioPlayerService : Service() {
     }
 
     private fun next() {
-        position = (position + 1) % itemList.size
+        position = (position + 1) % Songs.itemList.size
         playSong(position)
     }
 

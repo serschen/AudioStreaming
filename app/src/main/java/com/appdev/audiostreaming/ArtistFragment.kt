@@ -1,31 +1,33 @@
 package com.appdev.audiostreaming
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.ktx.Firebase
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "artistId"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ArtistFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ArtistFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var artistId: String? = null
+
+    lateinit var txtArtistName:TextView
+    lateinit var txtBiography:TextView
+    lateinit var ivArtist:ImageView
+    lateinit var rvCollections:RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            artistId = it.getString(ARG_PARAM1)
         }
     }
 
@@ -33,26 +35,54 @@ class ArtistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_artist, container, false)
+        val v = inflater.inflate(R.layout.fragment_artist, container, false)
+
+        v.findViewById<ImageView>(R.id.btnArtistBack).setOnClickListener{close()}
+
+        txtArtistName = v.findViewById(R.id.textView12)
+        txtBiography = v.findViewById(R.id.bio)
+        rvCollections = v.findViewById(R.id.a_page_recycler)
+        ivArtist = v.findViewById(R.id.imageView9)
+
+        setArtistSongs(v)
+
+        return v
+    }
+
+    private fun setArtistSongs(v: View) {
+        FirebaseFunctions.getInstance()
+            .getHttpsCallable("getArtistById?userId=" + Firebase.auth.currentUser?.uid +
+                    "&id=" + artistId)
+            .call()
+            .addOnFailureListener {
+                Log.wtf("tag", it)
+            }
+            .addOnSuccessListener {
+                val data:HashMap<String, Any> = it.data as HashMap<String, Any>
+                val artist: HashMap<String, Any> = data["artist"] as HashMap<String, Any>
+                val collections:ArrayList<HashMap<String, Any>> = data["collections"] as ArrayList<HashMap<String, Any>>
+
+                txtArtistName.text = artist["name"].toString()
+                txtBiography.text = artist["description"].toString()
+
+                rvCollections.layoutManager = LinearLayoutManager(context)
+
+                val songAdapter = ArtistCollectionAdapter(collections)
+
+                rvCollections.adapter = songAdapter
+            }
+    }
+
+    private fun close() {
+        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ArtistFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(artistId: String) =
             ArtistFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(ARG_PARAM1, artistId)
                 }
             }
     }
