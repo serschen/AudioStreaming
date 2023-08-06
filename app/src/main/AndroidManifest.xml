@@ -38,6 +38,8 @@
         </activity>
         <receiver android:name=".lukas.NotificationReceiver"/>
         <service android:name=".lukas.AudioPlayerService"/>
+        <receiver android:name="com.example.as.NotificationReceiver"/>
+        <service android:name=".lukas.AudioPlayerService"/>
     </application>
 
 </manifest>

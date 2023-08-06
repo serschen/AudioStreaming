@@ -37,7 +37,7 @@
         <!-- TODO: Update blank fragment layout -->
 
         <EditText
-            android:id="@+id/editTextNumber"
+            android:id="@+id/numSongs"
             android:layout_width="179dp"
             android:layout_height="match_parent"
             android:clickable="true"

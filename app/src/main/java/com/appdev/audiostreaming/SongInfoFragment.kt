@@ -5,17 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.appdev.audiostreaming.lukas.AudioPlayerService
 import com.appdev.audiostreaming.lukas.AudioPlayerService
 
 class SongInfoFragment : Fragment() {
 
     private lateinit var view: View
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +34,7 @@ class SongInfoFragment : Fragment() {
     companion object {
         const val ACTION_UPDATE_UI = "com.example.appdev.audiostreaming.UPDATE_UI"
     }
+
     private val updateUIReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == ACTION_UPDATE_UI) {

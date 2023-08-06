@@ -5,6 +5,12 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
+import android.util.Log
+import com.appdev.audiostreaming.MainActivity
+import com.appdev.audiostreaming.SongInfoFragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.ktx.Firebase
 import com.appdev.audiostreaming.*
 import com.google.firebase.storage.FirebaseStorage
 
