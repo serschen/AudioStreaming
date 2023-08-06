@@ -47,15 +47,15 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
        val v = inflater.inflate(R.layout.fragment_home, container,false)
 
-        settingsImage = v?.findViewById(R.id.settings)!!
+        settingsImage = v.findViewById(R.id.settings)!!
         settingsImage.setOnClickListener{
-            val transaction: FragmentTransaction = requireActivity().supportFragmentManager!!.beginTransaction()
+            val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, SettingFragment())
             transaction.commit()
         }
-        playbtnImage = v?.findViewById(R.id.imageViewPlayBtn)!!
+        playbtnImage = v.findViewById(R.id.imageViewPlayBtn)!!
         playbtnImage.setOnClickListener{
-            val transaction: FragmentTransaction = requireActivity().supportFragmentManager!!.beginTransaction()
+            val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, AudioplayerFragment())
             transaction.commit()
         }
@@ -68,12 +68,13 @@ class HomeFragment : Fragment() {
                 Log.wtf("tag", it)
             }
             .addOnSuccessListener {
-                val itemList:ArrayList<HashMap<String, Any>> = it.data as ArrayList<HashMap<String, Any>>
+                val itemList: ArrayList<HashMap<String, Any>> =
+                    it.data as ArrayList<HashMap<String, Any>>
 
                 val rwChat: RecyclerView = v.findViewById(R.id.homerecyclerview)
-                rwChat.layoutManager = LinearLayoutManager(this.requireContext())
+                rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter:SongAdapter = SongAdapter(itemList)
+                val songAdapter = SongAdapter(itemList, true)
 
                 rwChat.adapter = songAdapter
             }
