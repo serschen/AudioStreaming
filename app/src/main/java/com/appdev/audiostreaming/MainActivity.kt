@@ -22,6 +22,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
+import app.com.kotlinapp.OnSwipeTouchListener
+import com.appdev.audiostreaming.R.id.linearLayout
+import com.appdev.audiostreaming.R.layout.activity_main
 import com.appdev.audiostreaming.lukas.AudioPlayerService
 import com.example.`as`.NotificationReceiver
 import com.firebase.ui.auth.AuthUI
@@ -37,10 +40,34 @@ class MainActivity : AppCompatActivity() {
     private var currentSong: MutableList<Int> = mutableListOf()
     private lateinit var playBtn: Button
 
+    //Gestures
+
+    private lateinit var layout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(activity_main)
+        layout = findViewById(linearLayout)
+
+        layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                Toast.makeText(this@MainActivity, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show()
+            }
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                Toast.makeText(this@MainActivity, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show()
+            }
+            override fun onSwipeUp() {
+                super.onSwipeUp()
+                Toast.makeText(this@MainActivity, "Swipe up gesture detected", Toast.LENGTH_SHORT).show()
+            }
+            override fun onSwipeDown() {
+                super.onSwipeDown()
+                Toast.makeText(this@MainActivity, "Swipe down gesture detected", Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
       //  controlSound(currentSong[0])
 
@@ -145,7 +172,6 @@ class MainActivity : AppCompatActivity() {
                 handler.postDelayed(this,1000)
             }catch (e: Exception){
                     seekbar.progress = 0
-
                 }
             }
 

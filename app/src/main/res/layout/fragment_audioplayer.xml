@@ -53,7 +53,7 @@
         android:id="@+id/seekbar"
         android:layout_width="298dp"
         android:layout_height="30dp"
-        android:progress="50" />
+        android:progress="0" />
 
     <LinearLayout
         android:layout_width="300dp"

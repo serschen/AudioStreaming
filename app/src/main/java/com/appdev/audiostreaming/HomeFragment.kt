@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var settingsImage: ImageView
     private lateinit var playbtnImage: ImageView
     private lateinit var clockImg: ImageView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var currentThemes: Themes
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,11 +50,13 @@ class HomeFragment : Fragment() {
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_home, container, false)
+        recyclerView= v?.findViewById(R.id.homerecyclerview)!!
 
         settingsImage = v?.findViewById(R.id.settings)!!
         clockImg = v?.findViewById(R.id.clockIcon)!!
