@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.`as`.AudioPlayerService
+import com.appdev.audiostreaming.lukas.AudioPlayerService
 
 class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
                     private val albums:ArrayList<HashMap<String, Any>>,

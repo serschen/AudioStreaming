@@ -1,13 +1,10 @@
 package com.appdev.audiostreaming
 
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.storage.FirebaseStorage
-import java.io.Serializable
-
 
 class PlayerActivity : AppCompatActivity() {
     var txtName:TextView? = null
