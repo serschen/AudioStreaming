@@ -21,8 +21,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
-import com.appdev.audiostreaming.lukas.AudioPlayerService
-import com.appdev.audiostreaming.lukas.NotificationReceiver
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth

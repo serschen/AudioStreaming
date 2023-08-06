@@ -1,4 +1,4 @@
-package com.appdev.audiostreaming.lukas
+package com.appdev.audiostreaming
 
 import android.app.Service
 import android.content.Intent
@@ -57,8 +57,9 @@ class AudioPlayerService : Service() {
     }
 
     private fun previous() {
-        position = (position - 1 + Songs.itemList.size) % Songs.itemList.size
-        playSong(position)
+        //TODO
+        //position = (position - 1 + Songs.itemList.size) % Songs.itemList.size
+        //playSong(position)
     }
 
     private fun back(){
@@ -118,7 +119,8 @@ class AudioPlayerService : Service() {
     }
 
     private fun playSong(position: Int) {
-        if (position >= 0 && position < Songs.itemList.size) {
+        //TODO
+        /*if (position >= 0 && position < Songs.itemList.size) {
             val song = Songs.itemList[position]
             val path = song["path"]?.toString() ?: ""
             if (path != "") {
@@ -136,12 +138,13 @@ class AudioPlayerService : Service() {
                     updateUI()
                 }
             }
-        }
+        }*/
     }
 
     private fun next() {
-        position = (position + 1) % Songs.itemList.size
-        playSong(position)
+        //TODO
+        //position = (position + 1) % Songs.itemList.size
+        //playSong(position)
     }
 
     private fun updateUI() {

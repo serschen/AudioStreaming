@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.appdev.audiostreaming.lukas.AudioPlayerService
 
 class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>,
                   private val showPicture:Boolean) : RecyclerView.Adapter<SongAdapter.ViewHolder>() {
