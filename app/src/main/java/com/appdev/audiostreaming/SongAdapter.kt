@@ -9,8 +9,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>,
+class SongAdapter(private val viewModel: MyViewModel, private val songs:ArrayList<HashMap<String, Any>>,
                   private val showPicture:Boolean) : RecyclerView.Adapter<SongAdapter.ViewHolder>() {
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtName: TextView? = itemView.findViewById(R.id.txtResultName)
         val txtArtist: TextView? = itemView.findViewById(R.id.txtResultArtist)
@@ -19,7 +20,6 @@ class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>,
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.search_result, parent, false)
-
 
         return ViewHolder(view)
     }
@@ -41,10 +41,16 @@ class SongAdapter(private val songs:ArrayList<HashMap<String, Any>>,
         }
 
         holder.searchResultLayout.setOnClickListener{v ->
+            viewModel.position.value = position
             val intent = Intent(v.context, AudioPlayerService::class.java)
-            intent.putExtra("map", songs[position])
-            intent.putExtra("pos", position)
-            intent.action = "chan"
+            intent.action = "play"
+            val temp = viewModel.position.value?.let { it1 ->
+                viewModel.currentPlaylist.value?.get(
+                    it1
+                )?.get("path")
+            }
+            intent.putExtra("path", temp.toString())
+
             v.context.startService(intent)
         }
     }

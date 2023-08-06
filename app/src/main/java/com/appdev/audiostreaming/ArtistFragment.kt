@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -24,6 +25,8 @@ class ArtistFragment : Fragment() {
     lateinit var ivArtist:ImageView
     lateinit var rvCollections:RecyclerView
 
+    private lateinit var viewModel: MyViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +39,8 @@ class ArtistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_artist, container, false)
+
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         v.findViewById<ImageView>(R.id.btnArtistBack).setOnClickListener{close()}
 
@@ -67,7 +72,7 @@ class ArtistFragment : Fragment() {
 
                 rvCollections.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = ArtistCollectionAdapter(collections)
+                val songAdapter = ArtistCollectionAdapter(viewModel, collections)
 
                 rvCollections.adapter = songAdapter
             }

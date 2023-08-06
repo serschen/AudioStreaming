@@ -13,16 +13,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class HomeFragment : Fragment() {
     lateinit var settingsImage: ImageView
     lateinit var playbtnImage:ImageView
+
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
        val v = inflater.inflate(R.layout.fragment_home, container,false)
+
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         settingsImage = v?.findViewById(R.id.settings)!!
         settingsImage.setOnClickListener{
@@ -37,23 +44,16 @@ class HomeFragment : Fragment() {
             transaction.commit()
         }
 
+        viewModel.getAllSongs()
 
-        FirebaseFunctions.getInstance()
-            .getHttpsCallable("getAllSongs?userId=" + Firebase.auth.currentUser?.uid)
-            .call()
-            .addOnFailureListener {
-                Log.wtf("tag", it)
-            }
-            .addOnSuccessListener {
-                val itemList:ArrayList<HashMap<String, Any>> = it.data as ArrayList<HashMap<String, Any>>
+        viewModel.currentPlaylist.observe(viewLifecycleOwner, Observer {
+            val rwChat: RecyclerView = v.findViewById(R.id.homerecyclerview)
+            rwChat.layoutManager = LinearLayoutManager(context)
 
-                val rwChat: RecyclerView = v.findViewById(R.id.homerecyclerview)
-                rwChat.layoutManager = LinearLayoutManager(this.requireContext())
+            val songAdapter = SongAdapter(viewModel ,it, true)
 
-                val songAdapter:SongAdapter = SongAdapter(itemList, true)
-
-                rwChat.adapter = songAdapter
-            }
+            rwChat.adapter = songAdapter
+        })
 
         return v
     }

@@ -21,6 +21,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
@@ -31,18 +33,22 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     lateinit var bottomNav : BottomNavigationView
 
+    private lateinit var viewModel: MyViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
 
         val filter = IntentFilter(ACTION_UPDATE_UI)
         registerReceiver(updateUIReceiver, filter)
 
         createChannel()
 
-        if(auth.currentUser == null){
+        if (auth.currentUser == null) {
             redirectStartActivity()
-        }else{
+        } else {
             loadFragment(HomeFragment())
             bottomNav = findViewById(R.id.bottomNav)
             bottomNav.setOnItemSelectedListener {
@@ -59,12 +65,54 @@ class MainActivity : AppCompatActivity() {
                         loadFragment(LibraryFragment())
                         true
                     }
-                    else -> {false}
+                    else -> {
+                        false
+                    }
                 }
             }
 
             Toast.makeText(this, "" + auth.currentUser?.uid, Toast.LENGTH_SHORT).show()
         }
+
+        viewModel.isPlaying.observe(this, Observer {
+            if (AudioPlayerService.uri != null) {
+                val intent = Intent(this, AudioPlayerService::class.java)
+                if (it) {
+                    val playButton = findViewById<ImageView>(R.id.play_button)
+                    if (viewModel.isPlaying.value == true) {
+                        playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+                        intent.action = "play"
+                        val temp = viewModel.position.value?.let { it1 ->
+                            viewModel.currentPlaylist.value?.get(
+                                it1
+                            )?.get("path")
+                        }
+                        intent.putExtra("path", temp.toString())
+                    } else {
+                        playButton.setImageResource(R.drawable.pause)
+                        intent.action = "pause"
+                    }
+                }
+                var cut = findViewById<TextView>(R.id.song_info).text.toString().splitToSequence(" - ")
+                viewModel.isPlaying.value?.let { it1 ->
+                    updateNotification(cut.first(), cut.last(),
+                        it1
+                    )
+                }
+                startService(intent)
+            }
+        })
+
+        viewModel.position.observe(this, Observer {
+            var intent = Intent(this, AudioPlayerService::class.java)
+            intent.action = "play"
+            val temp = viewModel.position.value?.let { it1 ->
+                viewModel.currentPlaylist.value?.get(
+                    it1
+                )?.get("path")
+            }
+            intent.putExtra("path", temp.toString())
+        })
     }
 
     fun logout() {
@@ -92,45 +140,51 @@ class MainActivity : AppCompatActivity() {
     /////////////////////////////////////
 
     fun onPreviousCLicked(view: View) {
+        var position = viewModel.position.value?.minus(1)
+        if(position!! < 0){
+            position = viewModel.currentPlaylist.value?.size?.minus(1)
+        }
+        viewModel.position.value = position
+
         if (AudioPlayerService.uri != null) {
             val intent = Intent(this, AudioPlayerService::class.java)
-            intent.action = "prev"
+            intent.action = "play"
+            val temp = viewModel.position.value?.let { it1 ->
+                viewModel.currentPlaylist.value?.get(
+                    it1
+                )?.get("path")
+            }
+            intent.putExtra("path", temp.toString())
             startService(intent)
         }
     }
     fun onBackClicked(view: View) {
-        if (AudioPlayerService.uri != null) {
-            val intent = Intent(this, AudioPlayerService::class.java)
-            intent.action = "back"
-            startService(intent)
-        }
+        val intent = Intent(this, AudioPlayerService::class.java)
+        intent.action = "back"
     }
     fun onPlayClicked(view: View) {
-        if (AudioPlayerService.uri != null) {
-            val playButton = findViewById<ImageView>(R.id.play_button)
-            if (AudioPlayerService.isPlaying) {
-                playButton.setImageResource(R.drawable.baseline_play_arrow_24)
-            } else {
-                playButton.setImageResource(R.drawable.pause)
-            }
-            val intent = Intent(this, AudioPlayerService::class.java)
-            intent.action = "play"
-            var cut = findViewById<TextView>(R.id.song_info).text.toString().splitToSequence(" - ")
-            updateNotification(cut.first(), cut.last(), AudioPlayerService.isPlaying)
-            startService(intent)
-        }
+        viewModel.isPlaying.value = !viewModel.isPlaying.value!!
     }
     fun onForwardClicked(view: View) {
-        if (AudioPlayerService.uri != null) {
-            val intent = Intent(this, AudioPlayerService::class.java)
-            intent.action = "forw"
-            startService(intent)
-        }
+        val intent = Intent(this, AudioPlayerService::class.java)
+        intent.action = "forward"
     }
     fun onNextClicked(view: View) {
+        var position = viewModel.position.value?.plus(1)
+        if(position!! > viewModel.currentPlaylist.value!!.size - 1){
+            position = 0
+        }
+        viewModel.position.value = position
+
         if (AudioPlayerService.uri != null) {
             val intent = Intent(this, AudioPlayerService::class.java)
-            intent.action = "next"
+            intent.action = "play"
+            val temp = viewModel.position.value?.let { it1 ->
+                viewModel.currentPlaylist.value?.get(
+                    it1
+                )?.get("path")
+            }
+            intent.putExtra("path", temp.toString())
             startService(intent)
         }
     }
@@ -191,12 +245,6 @@ class MainActivity : AppCompatActivity() {
         intent.action = action
 
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    }
-
-    fun onMusicbarClicked(view: View) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container,SongInfoFragment())
-        transaction.commit()
     }
 
     companion object {

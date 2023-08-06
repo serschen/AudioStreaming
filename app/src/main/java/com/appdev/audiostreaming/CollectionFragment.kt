@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -28,6 +29,8 @@ class CollectionFragment : Fragment() {
     lateinit var txtArtist:TextView
     lateinit var btnClose: Button
 
+    private lateinit var viewModel: MyViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,6 +45,8 @@ class CollectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_collection, container, false)
+
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         txtName = v.findViewById<TextView>(R.id.collectionName)
         txtArtist = v.findViewById<TextView>(R.id.collectionArtist)
@@ -75,7 +80,7 @@ class CollectionFragment : Fragment() {
                     val rwChat: RecyclerView = v.findViewById(R.id.rvSongs)
                     rwChat.layoutManager = LinearLayoutManager(context)
 
-                    val songAdapter = SongAdapter(itemList, false)
+                    val songAdapter = SongAdapter(viewModel, itemList, false)
 
                     rwChat.adapter = songAdapter
                 }

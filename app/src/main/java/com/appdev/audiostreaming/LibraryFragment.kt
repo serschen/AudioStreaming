@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -16,11 +17,15 @@ class LibraryFragment : Fragment() {
 
     lateinit var rwFav:RecyclerView
 
+    private lateinit var viewModel: MyViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_library, container, false)
+
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         FirebaseFunctions.getInstance()
             .getHttpsCallable("getHeartedSongs?userId=" + Firebase.auth.currentUser?.uid)
@@ -35,7 +40,7 @@ class LibraryFragment : Fragment() {
                 val rwChat: RecyclerView = v.findViewById(R.id.rvFav)
                 rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = SongAdapter(itemList, true)
+                val songAdapter = SongAdapter(viewModel, itemList, true)
 
                 rwChat.adapter = songAdapter
             }
