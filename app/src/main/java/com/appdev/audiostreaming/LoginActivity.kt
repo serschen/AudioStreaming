@@ -41,15 +41,15 @@ class LoginActivity : AppCompatActivity() {
         // [START auth_fui_create_intent]
         // Choose authentication providers
         val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
+            AuthUI.IdpConfig.EmailBuilder().build()
+            //AuthUI.IdpConfig.GoogleBuilder().build()
         )
 
         // Create and launch sign-in intent
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
-            .setLogo(R.drawable.startscreen_note) // Set logo drawable
+            .setLogo(R.drawable.startscreen_info) // Set logo drawable
             .build()
         signInLauncher.launch(signInIntent)
         // [END auth_fui_create_intent]
@@ -68,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ..
-            Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error: Login failed", Toast.LENGTH_SHORT).show()
         }
     }
 

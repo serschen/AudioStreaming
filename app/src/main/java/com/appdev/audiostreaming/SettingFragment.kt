@@ -1,5 +1,6 @@
 package com.appdev.audiostreaming
 
+import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
@@ -22,7 +23,7 @@ class SettingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private lateinit var changeThemeBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
@@ -31,6 +32,8 @@ class SettingFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -39,7 +42,12 @@ class SettingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_setting, container, false)
+        changeThemeBtn = v?.findViewById(R.id.btn_change_theme)!!
 
+        changeThemeBtn.setOnClickListener{
+            v.setBackgroundColor(Color.LTGRAY)
+
+        }
         v.findViewById<Button>(R.id.btnLogoutSettings).setOnClickListener {
             logout()
         }

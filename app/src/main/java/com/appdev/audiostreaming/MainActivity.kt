@@ -9,21 +9,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.Uri
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.example.`as`.AudioPlayerService
+import com.appdev.audiostreaming.lukas.AudioPlayerService
 import com.example.`as`.NotificationReceiver
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,11 +32,17 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
-    lateinit var bottomNav: BottomNavigationView
+   private lateinit var bottomNav: BottomNavigationView
+    private var musicplayer: MediaPlayer? = null
+    private var currentSong: MutableList<Int> = mutableListOf()
+    private lateinit var playBtn: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+      //  controlSound(currentSong[0])
 
         val filter = IntentFilter(ACTION_UPDATE_UI)
         registerReceiver(updateUIReceiver, filter)
@@ -92,7 +97,60 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    private fun controlSound(id:Int){
+        playBtn= findViewById(R.id.play_button)
 
+        playBtn.setOnClickListener{
+            if(musicplayer == null){
+                musicplayer = MediaPlayer.create(this,id)
+                Log.d("MainActivity", "ID:${musicplayer!!.audioSessionId}")
+
+                initSeekBar()
+            }
+            musicplayer?.start()
+            Log.d("MainActivity", "Duration: ${musicplayer!!.duration/1000} seconds")
+        }
+        val seekbar:SeekBar = findViewById(R.id.seekbar)
+
+        seekbar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if(fromUser) musicplayer?.seekTo(progress)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+    }
+    private fun initSeekBar(){
+        val seekbar:SeekBar = findViewById(R.id.seekbar)
+
+        seekbar.max = musicplayer!!.duration
+        Log.d("MainActivity", "SeekBar Maximum set at ${musicplayer!!.duration/1000} seconds")
+
+        val handler = Handler()
+
+        handler.postDelayed(object: Runnable{
+            override fun run() {
+                try{
+                seekbar.progress = musicplayer!!.currentPosition
+                handler.postDelayed(this,1000)
+            }catch (e: Exception){
+                    seekbar.progress = 0
+
+                }
+            }
+
+        },0)
+    }
     override fun onBackPressed() {
         //loadFragment(HomeFragment())
     }
@@ -233,5 +291,13 @@ class MainActivity : AppCompatActivity() {
                 findViewById<ImageView>(R.id.play_button).setImageResource(if (isPlaying) R.drawable.pause else R.drawable.baseline_play_arrow_24)
             }
         }
+    }
+    //function for changeing Theme
+    private fun changeTheme(theme: Int) {
+        finish()
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra("set_theme", theme)
+        startActivity(intent)
     }
 }

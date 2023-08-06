@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.example.`as`.AudioPlayerService
+import com.appdev.audiostreaming.lukas.AudioPlayerService
 
 
 class SongAdapter(private val songs: ArrayList<HashMap<String, Any>>) :
@@ -21,7 +21,7 @@ class SongAdapter(private val songs: ArrayList<HashMap<String, Any>>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //animation in Grid
-        val animationView: LottieAnimationView = itemView.findViewById(R.id.animationView)
+//        val animationView: LottieAnimationView = itemView.findViewById(R.id.animationView)
 
         val txtName: TextView? = itemView.findViewById(R.id.txtName)
         val txtArtist: TextView? = itemView.findViewById(R.id.txtArtist)
@@ -57,8 +57,8 @@ class SongAdapter(private val songs: ArrayList<HashMap<String, Any>>) :
         }
 
         //https://medium.com/@manuchekhrdev/lottie-animation-in-android-using-kotlin-8ff5d07f5f23#:~:text=Lottie%20is%20a%20library%20that,back%20natively%20on%20Android%20devices.
-        val item = songs[position]
+      //  val item = songs[position]
         // Set the Lottie animation for the view holder
-        holder.animationView.playAnimation()
+       // holder.animationView.playAnimation()
     }
 }

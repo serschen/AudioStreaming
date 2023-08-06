@@ -1,4 +1,4 @@
-package com.example.`as`
+package com.appdev.audiostreaming.lukas
 
 import android.app.Service
 import android.content.Intent
@@ -6,10 +6,8 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
 import android.util.Log
-import androidx.core.net.toUri
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.appdev.audiostreaming.*
+import com.appdev.audiostreaming.MainActivity
+import com.appdev.audiostreaming.SongInfoFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
@@ -146,7 +144,7 @@ class AudioPlayerService : Service() {
                 val storage = FirebaseStorage.getInstance()
                 storage.reference.child(path).downloadUrl.addOnSuccessListener {
                     uri = it
-                    AudioPlayerService.position = position
+                    Companion.position = position
                     player.reset()
                     player.setDataSource(this, uri!!)
                     player.prepare()

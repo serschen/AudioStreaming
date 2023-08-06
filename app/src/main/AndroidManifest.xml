@@ -37,7 +37,7 @@
             android:exported="true">
         </activity>
         <receiver android:name="com.example.as.NotificationReceiver"/>
-        <service android:name="com.example.as.AudioPlayerService"/>
+        <service android:name=".lukas.AudioPlayerService"/>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -34,7 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var settingsImage: ImageView
     private lateinit var playbtnImage: ImageView
     private lateinit var clockImg: ImageView
-
+    private lateinit var currentThemes: Themes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,4 +119,27 @@ class HomeFragment : Fragment() {
     private fun showMsg(message: String) {
         Toast.makeText(requireContext(), "Last played Songs..", Toast.LENGTH_LONG).show()
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+            ViewModelProvider(requireActivity()).get(AudioServiceViewModel::class.java)
+
+/*   sharedViewModel.imageButtonResId.observe(viewLifecycleOwner, Observer { resId ->
+       // Update the ImageButton in FragmentA with the new resource ID
+       imageButton.setImageResource(resId)
+   })
+
+   // Set the initial image for the ImageButton
+   settingsImage.setImageResource(R.drawable.baseline_more_time_24)
+
+   // Set a click listener to change the ImageButton from FragmentA
+   settingsImage.setOnClickListener {
+       sharedViewModel.setImageButtonResId(R.drawable.retro_library__2_)
+   }
+}
+}*/
+    }
+
+
 }
