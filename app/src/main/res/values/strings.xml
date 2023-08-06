@@ -12,4 +12,36 @@
     <string name="logout_btn">Logout</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imgLogo">logoImg</string>
+    <string name="logout">Logout</string>
+    <string name="current_version">Current Version</string>
+    <string name="app_title">Krallify_1.0</string>
+    <string name="developer_title">Developer:</string>
+    <string name="developers">Anton Serschen, Lukas Krall, Melanie Bosjancic</string>
+    <string name="change_designBtn">Change Design</string>
+    <string name="player_name">Player</string>
+
+
+    //Background Alternate
+
+    <style name="alternate_page">
+        <item name="android:background">#9A9A9A</item>
+    </style>
+
+    //Button Design Alternate
+
+    <style name="alternate_button">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">#A358AF</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="alternate_imageView">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">#A358AF</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+
+
 </resources>

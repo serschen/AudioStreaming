@@ -1,6 +1,7 @@
 package com.appdev.audiostreaming
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -16,8 +17,19 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
 
 class SearchFragment : Fragment() {
-
+    private var param1: String? = null
+    private var param2: String? = null
     lateinit var searchBar: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val inflater = TransitionInflater.from(requireContext())
+        enterTransition = inflater.inflateTransition(R.transition.slide)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

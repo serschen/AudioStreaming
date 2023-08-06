@@ -17,4 +17,18 @@
     <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/krallify</item>
     </style>
+
+    <style name="Theme.AlternativeTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">#A277ED</item>
+        <item name="colorOnPrimary">#AFAFAF</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#DA9CE4</item>
+        <item name="colorSecondaryVariant">@color/back_color</item>
+        <item name="colorOnSecondary">#AFAFAF</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/purple_500</item>
+        <!-- Customize your theme here. -->
+    </style>
 </resources>
