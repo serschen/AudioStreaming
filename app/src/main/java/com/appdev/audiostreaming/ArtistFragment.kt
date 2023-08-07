@@ -75,6 +75,7 @@ class ArtistFragment : Fragment() {
                 val songAdapter = ArtistCollectionAdapter(requireActivity().supportFragmentManager, viewModel, collections)
 
                 rvCollections.adapter = songAdapter
+
             }
     }
 

@@ -32,7 +32,6 @@ class SongAdapter(private val supportFragmentManager: FragmentManager, private v
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.search_result, parent, false)
 
-
         return ViewHolder(view)
     }
 

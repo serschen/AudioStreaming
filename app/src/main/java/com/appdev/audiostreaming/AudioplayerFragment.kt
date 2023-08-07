@@ -1,6 +1,7 @@
 package com.appdev.audiostreaming
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.ktx.Firebase
 
 class AudioplayerFragment : Fragment() {
 
@@ -54,4 +57,35 @@ class AudioplayerFragment : Fragment() {
         activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = true
     }
 
+    private var isLiked: Boolean = false
+    fun onLike(view: View) {
+        val likeButton = activity?.findViewById<ImageView>(R.id.animationViewHeart)
+        if(isLiked){
+            FirebaseFunctions.getInstance()
+                .getHttpsCallable("https://us-central1-audio-streaming-7c505.cloudfunctions.net/heartSong?userId="+Firebase.auth.currentUser?.uid+"&songId="+ viewModel.position.value?.let {
+                    viewModel.currentPlaylist.value?.get(
+                        it
+                    )?.get("id")
+                })
+                .call()
+                .addOnFailureListener {
+                    Log.wtf("tag", it)
+                }.addOnSuccessListener {
+                    //TODO
+                }
+        }else{
+            FirebaseFunctions.getInstance()
+                .getHttpsCallable("https://us-central1-audio-streaming-7c505.cloudfunctions.net/unheartSong?id="+viewModel.position.value?.let {
+                    viewModel.currentPlaylist.value?.get(
+                        it
+                    )?.get("fav")
+                })
+                .call()
+                .addOnFailureListener {
+                    Log.wtf("tag", it)
+                }.addOnSuccessListener {
+                    //TODO
+                }
+        }
+    }
 }

@@ -57,6 +57,8 @@ class LibraryFragment : Fragment() {
                 val songAdapter = SongAdapter(requireActivity().supportFragmentManager, viewModel, itemList, true)
 
                 rwChat.adapter = songAdapter
+
+                viewModel.currentPlaylist.value = itemList
             }
 
         return v

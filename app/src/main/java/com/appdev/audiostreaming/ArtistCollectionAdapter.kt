@@ -34,5 +34,7 @@ class ArtistCollectionAdapter(private val supportFragmentManager: FragmentManage
         val songAdapter = SongAdapter(supportFragmentManager, viewModel, itemList, true)
 
         holder.rvSongs.adapter = songAdapter
+
+        viewModel.currentPlaylist.value = itemList
     }
 }

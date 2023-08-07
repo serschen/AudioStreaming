@@ -233,6 +233,8 @@ class MainActivity : AppCompatActivity() {
     /////////////////////////////////////
 
     fun onPreviousCLicked(view: View) {
+        AudioPlayerService.time = 0
+
         var position = viewModel.position.value?.minus(1)
         if(position!! < 0){
             position = viewModel.currentPlaylist.value?.size?.minus(1)
@@ -272,6 +274,8 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
     }
     fun onNextClicked(view: View) {
+        AudioPlayerService.time = 0
+
         var position = viewModel.position.value?.plus(1)
         if(position!! > viewModel.currentPlaylist.value!!.size - 1){
             position = 0

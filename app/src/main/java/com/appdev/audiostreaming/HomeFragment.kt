@@ -50,21 +50,10 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         settingsImage = v?.findViewById(R.id.settings)!!
-        clockImg = v?.findViewById(R.id.clockIcon)!!
-        clockImg.setOnClickListener {
-            showMsg("This is some Message for u! ;)")
-        }
         settingsImage.setOnClickListener {
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager!!.beginTransaction()
             transaction.replace(R.id.container, SettingFragment())
-            transaction.commit()
-        }
-        playbtnImage = v?.findViewById(R.id.imageViewPlayBtn)!!
-        playbtnImage.setOnClickListener {
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager!!.beginTransaction()
-            transaction.replace(R.id.container, AudioplayerFragment())
             transaction.commit()
         }
 
