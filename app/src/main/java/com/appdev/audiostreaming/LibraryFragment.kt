@@ -13,17 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
-import android.widget.EditText
-
 
 class LibraryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var txt: EditText
 
-    lateinit var rwFav:RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
@@ -38,6 +30,7 @@ class LibraryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_library, container, false)
+
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         FirebaseFunctions.getInstance()
@@ -61,7 +54,9 @@ class LibraryFragment : Fragment() {
                         true
                     )
 
-                    rwChat.adapter = songAdapter
+                rwChat.adapter = songAdapter
+
+                viewModel.currentPlaylist.value = itemList
                 }
             }
 

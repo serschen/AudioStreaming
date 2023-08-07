@@ -57,7 +57,7 @@ class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
             holder.txtName?.text = albumName
             holder.txtArtist?.text = type
             //open AlbumFragment
-            holder.searchResultLayout.setOnClickListener{v ->
+            holder.searchResultLayout.setOnClickListener{
                 val transaction = fragmentManager.beginTransaction()
                 transaction.add(android.R.id.content , CollectionFragment.newInstance(id, artistName, albumName))
                 transaction.commit()
@@ -68,7 +68,7 @@ class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
             holder.txtArtist?.text = "Artist"
             val id = artists[pos]["id"].toString()
             //open ArtistFragment
-            holder.searchResultLayout.setOnClickListener{v ->
+            holder.searchResultLayout.setOnClickListener{
                 val transaction = fragmentManager.beginTransaction()
                 transaction.add(android.R.id.content , ArtistFragment.newInstance(id))
                 transaction.commit()

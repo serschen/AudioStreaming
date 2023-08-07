@@ -25,9 +25,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import app.com.kotlinapp.OnSwipeTouchListener
 import com.appdev.audiostreaming.R.id.linearLayout
 import com.appdev.audiostreaming.R.layout.activity_main
 import com.firebase.ui.auth.AuthUI
@@ -40,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
    private lateinit var bottomNav: BottomNavigationView
     private var musicplayer: MediaPlayer? = null
-    private var currentSong: MutableList<Int> = mutableListOf()
     private lateinit var playBtn: Button
 
     //Gestures
@@ -57,11 +54,11 @@ class MainActivity : AppCompatActivity() {
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                Toast.makeText(this@MainActivity, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show()
+                previous()
             }
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                Toast.makeText(this@MainActivity, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show()
+                next()
             }
             override fun onSwipeUp() {
                 super.onSwipeUp()
@@ -117,7 +114,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.isPlaying.observe(this, Observer {
+        viewModel.isPlaying.observe(this) {
             val intent = Intent(this, AudioPlayerService::class.java)
             val playButton = findViewById<ImageView>(R.id.play_button)
             if (viewModel.isPlaying.value == true) {
@@ -133,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                 playButton.setImageResource(R.drawable.baseline_play_arrow_24)
                 intent.action = "pause"
             }
-            var cut =
+            val cut =
                 findViewById<TextView>(R.id.song_info).text.toString().splitToSequence(" - ")
             viewModel.isPlaying.value?.let { it1 ->
                 updateNotification(
@@ -143,10 +140,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             startService(intent)
-        })
+        }
 
-        viewModel.position.observe(this, Observer {
-            var intent = Intent(this, AudioPlayerService::class.java)
+        viewModel.position.observe(this) {
+            val intent = Intent(this, AudioPlayerService::class.java)
             intent.action = "play"
             val temp = viewModel.position.value?.let { it1 ->
                 viewModel.currentPlaylist.value?.get(
@@ -154,15 +151,17 @@ class MainActivity : AppCompatActivity() {
                 )?.get("path")
             }
             intent.putExtra("path", temp.toString())
-        })
+        }
 
-        viewModel.title.observe(this, Observer {
-            findViewById<TextView>(R.id.song_info).text = viewModel.title.value + " - " + viewModel.artist.value
-        })
+        viewModel.title.observe(this) {
+            findViewById<TextView>(R.id.song_info).text =
+                viewModel.title.value + " - " + viewModel.artist.value
+        }
 
-        viewModel.artist.observe(this, Observer {
-            findViewById<TextView>(R.id.song_info).text = viewModel.title.value + " - " + viewModel.artist.value
-        })
+        viewModel.artist.observe(this) {
+            findViewById<TextView>(R.id.song_info).text =
+                viewModel.title.value + " - " + viewModel.artist.value
+        }
     }
 
     fun logout() {
@@ -244,6 +243,11 @@ class MainActivity : AppCompatActivity() {
     /////////////////////////////////////
 
     fun onPreviousCLicked(view: View) {
+        previous()
+    }
+    private fun previous(){
+        AudioPlayerService.time = 0
+
         var position = viewModel.position.value?.minus(1)
         if(position!! < 0){
             position = viewModel.currentPlaylist.value?.size?.minus(1)
@@ -271,11 +275,7 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
     }
     fun onPlayClicked(view: View) {
-        if(viewModel.isPlaying.value == true){
-            viewModel.isPlaying.value = false
-        }else{
-            viewModel.isPlaying.value = true
-        }
+        viewModel.isPlaying.value = viewModel.isPlaying.value != true
     }
     fun onForwardClicked(view: View) {
         val intent = Intent(this, AudioPlayerService::class.java)
@@ -283,6 +283,11 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
     }
     fun onNextClicked(view: View) {
+        next()
+    }
+    private fun next(){
+        AudioPlayerService.time = 0
+
         var position = viewModel.position.value?.plus(1)
         if(position!! > viewModel.currentPlaylist.value!!.size - 1){
             position = 0
@@ -318,7 +323,7 @@ class MainActivity : AppCompatActivity() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun updateNotification(title: String, artist: String, isPlaying: Boolean) {
+    private fun updateNotification(title: String, artist: String, isPlaying: Boolean) {
         val prevIntent = createPendingIntent("prev")
         val backIntent = createPendingIntent("back")
         val playIntent = createPendingIntent("play")
@@ -379,7 +384,7 @@ class MainActivity : AppCompatActivity() {
                 val title = intent.getStringExtra("title")
                 val artist = intent.getStringExtra("artist")
 
-                findViewById<TextView>(R.id.song_info).setText("$title - $artist")
+                findViewById<TextView>(R.id.song_info).text = "$title - $artist"
                 findViewById<ImageView>(R.id.play_button).setImageResource(if (isPlaying) R.drawable.pause else R.drawable.baseline_play_arrow_24)
             }
         }
