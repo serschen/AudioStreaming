@@ -1,15 +1,19 @@
 package com.appdev.audiostreaming
 
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.firebase.storage.FirebaseStorage
 
 
 class SongAdapter(private val supportFragmentManager: FragmentManager, private val viewModel: MyViewModel, private val songs: ArrayList<HashMap<String, Any>>, private var showPicture: Boolean) :
@@ -53,12 +57,24 @@ class SongAdapter(private val supportFragmentManager: FragmentManager, private v
         holder.txtName?.text = songs[position]["name"].toString()
         holder.txtArtist?.text = songs[position]["artistName"].toString()
 
-        holder.searchResultLayout.setOnClickListener {
-            if (!showPicture) {
-                holder.img.visibility = View.GONE
-            }
+        if (!showPicture) {
+            holder.img.visibility = View.GONE
+        }else{
+            val storageReference = FirebaseStorage.getInstance().reference
+            val photoReference = storageReference.child(songs[position]["imagePath"].toString())
 
+            val ONE_MEGABYTE = (1024 * 1024).toLong()
+            photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
+                val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                holder.img.setImageBitmap(bmp)
+            }.addOnFailureListener {
+                Log.wtf("song adapter", "No Such file or Path found!!")
+            }
+        }
+
+        holder.searchResultLayout.setOnClickListener {
             holder.searchResultLayout.setOnClickListener {
+                viewModel.currentPlaylist.value = songs
                 viewModel.position.value = position
                 viewModel.isPlaying.value = true
                 val position = viewModel.position.value

@@ -55,8 +55,6 @@ class LibraryFragment : Fragment() {
                     )
 
                 rwChat.adapter = songAdapter
-
-                viewModel.currentPlaylist.value = itemList
                 }
             }
 
