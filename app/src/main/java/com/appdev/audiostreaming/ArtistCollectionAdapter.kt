@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ArtistCollectionAdapter(private val viewModel: MyViewModel, private val data:ArrayList<HashMap<String, Any>>): RecyclerView.Adapter<ArtistCollectionAdapter.ViewHolder>() {
+class ArtistCollectionAdapter(private val supportFragmentManager: FragmentManager, private val viewModel: MyViewModel, private val data:ArrayList<HashMap<String, Any>>): RecyclerView.Adapter<ArtistCollectionAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val img: ImageView = itemView.findViewById<ImageView>(R.id.imgArtistCollection)
         val txtName: TextView = itemView.findViewById<TextView>(R.id.txtCollectionName)
@@ -30,7 +31,7 @@ class ArtistCollectionAdapter(private val viewModel: MyViewModel, private val da
 
         val itemList = data[position]["songs"] as ArrayList<HashMap<String, Any>>
 
-        val songAdapter = SongAdapter(viewModel, itemList, true)
+        val songAdapter = SongAdapter(supportFragmentManager, viewModel, itemList, true)
 
         holder.rvSongs.adapter = songAdapter
     }

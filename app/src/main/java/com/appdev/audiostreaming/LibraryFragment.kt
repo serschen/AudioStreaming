@@ -1,6 +1,5 @@
 package com.appdev.audiostreaming
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -55,7 +54,7 @@ class LibraryFragment : Fragment() {
                 val rwChat: RecyclerView = v.findViewById(R.id.rvFav)
                 rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = SongAdapter(viewModel, itemList, true)
+                val songAdapter = SongAdapter(requireActivity().supportFragmentManager, viewModel, itemList, true)
 
                 rwChat.adapter = songAdapter
             }

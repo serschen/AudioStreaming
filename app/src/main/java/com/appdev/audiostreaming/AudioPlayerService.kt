@@ -58,6 +58,7 @@ class AudioPlayerService : Service() {
                 player.prepare()
                 player.setOnCompletionListener {
                 }
+                player.seekTo(time)
                 player.start()
             }
         }
@@ -65,13 +66,24 @@ class AudioPlayerService : Service() {
 
     private fun pause(){
         player.pause()
+        time = player.currentPosition
     }
 
     private fun back(){
-        //TODO
+        player.pause()
+        time = player.currentPosition
+        time = time - 15000
+        if(time < 0) time = 0
+        player.seekTo(time)
+        player.start()
     }
 
     private fun forward(){
-        //TODO
+        player.pause()
+        time = player.currentPosition
+        time = time + 15000
+        if(time > player.duration) time = player.duration
+        player.seekTo(time)
+        player.start()
     }
 }

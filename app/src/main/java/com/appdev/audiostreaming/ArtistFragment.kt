@@ -72,7 +72,7 @@ class ArtistFragment : Fragment() {
 
                 rvCollections.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = ArtistCollectionAdapter(viewModel, collections)
+                val songAdapter = ArtistCollectionAdapter(requireActivity().supportFragmentManager, viewModel, collections)
 
                 rvCollections.adapter = songAdapter
             }

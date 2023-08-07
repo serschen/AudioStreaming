@@ -104,37 +104,34 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
-            Toast.makeText(this, "" + auth.currentUser?.uid, Toast.LENGTH_SHORT).show()
         }
 
         viewModel.isPlaying.observe(this, Observer {
-            if (AudioPlayerService.uri != null) {
-                val intent = Intent(this, AudioPlayerService::class.java)
-                if (it) {
-                    val playButton = findViewById<ImageView>(R.id.play_button)
-                    if (viewModel.isPlaying.value == true) {
-                        playButton.setImageResource(R.drawable.baseline_play_arrow_24)
-                        intent.action = "play"
-                        val temp = viewModel.position.value?.let { it1 ->
-                            viewModel.currentPlaylist.value?.get(
-                                it1
-                            )?.get("path")
-                        }
-                        intent.putExtra("path", temp.toString())
-                    } else {
-                        playButton.setImageResource(R.drawable.pause)
-                        intent.action = "pause"
-                    }
-                }
-                var cut = findViewById<TextView>(R.id.song_info).text.toString().splitToSequence(" - ")
-                viewModel.isPlaying.value?.let { it1 ->
-                    updateNotification(cut.first(), cut.last(),
+            val intent = Intent(this, AudioPlayerService::class.java)
+            val playButton = findViewById<ImageView>(R.id.play_button)
+            if (viewModel.isPlaying.value == true) {
+                playButton.setImageResource(R.drawable.pause)
+                intent.action = "play"
+                val temp = viewModel.position.value?.let { it1 ->
+                    viewModel.currentPlaylist.value?.get(
                         it1
-                    )
+                    )?.get("path")
                 }
-                startService(intent)
+                intent.putExtra("path", temp.toString())
+            } else {
+                playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+                intent.action = "pause"
             }
+            var cut =
+                findViewById<TextView>(R.id.song_info).text.toString().splitToSequence(" - ")
+            viewModel.isPlaying.value?.let { it1 ->
+                updateNotification(
+                    cut.first(), cut.last(),
+                    it1
+                )
+            }
+
+            startService(intent)
         })
 
         viewModel.position.observe(this, Observer {
@@ -146,6 +143,14 @@ class MainActivity : AppCompatActivity() {
                 )?.get("path")
             }
             intent.putExtra("path", temp.toString())
+        })
+
+        viewModel.title.observe(this, Observer {
+            findViewById<TextView>(R.id.song_info).text = viewModel.title.value + " - " + viewModel.artist.value
+        })
+
+        viewModel.artist.observe(this, Observer {
+            findViewById<TextView>(R.id.song_info).text = viewModel.title.value + " - " + viewModel.artist.value
         })
     }
 
@@ -233,6 +238,9 @@ class MainActivity : AppCompatActivity() {
             position = viewModel.currentPlaylist.value?.size?.minus(1)
         }
         viewModel.position.value = position
+        viewModel.title.value =
+            viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("name").toString() }
+        viewModel.artist.value = viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("artistName").toString() }
 
         if (AudioPlayerService.uri != null) {
             val intent = Intent(this, AudioPlayerService::class.java)
@@ -249,13 +257,19 @@ class MainActivity : AppCompatActivity() {
     fun onBackClicked(view: View) {
         val intent = Intent(this, AudioPlayerService::class.java)
         intent.action = "back"
+        startService(intent)
     }
     fun onPlayClicked(view: View) {
-        viewModel.isPlaying.value = !viewModel.isPlaying.value!!
+        if(viewModel.isPlaying.value == true){
+            viewModel.isPlaying.value = false
+        }else{
+            viewModel.isPlaying.value = true
+        }
     }
     fun onForwardClicked(view: View) {
         val intent = Intent(this, AudioPlayerService::class.java)
         intent.action = "forward"
+        startService(intent)
     }
     fun onNextClicked(view: View) {
         var position = viewModel.position.value?.plus(1)
@@ -263,6 +277,10 @@ class MainActivity : AppCompatActivity() {
             position = 0
         }
         viewModel.position.value = position
+        viewModel.title.value =
+            viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("name").toString() }
+        viewModel.artist.value = viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("artistName").toString() }
+
 
         if (AudioPlayerService.uri != null) {
             val intent = Intent(this, AudioPlayerService::class.java)
@@ -362,5 +380,9 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         intent.putExtra("set_theme", theme)
         startActivity(intent)
+    }
+
+    fun onMusicbarClicked(view: View) {
+        loadFragment(AudioplayerFragment())
     }
 }
