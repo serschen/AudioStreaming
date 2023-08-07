@@ -49,26 +49,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="82dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/clockIcon"
-            android:layout_width="97dp"
-            android:layout_height="69dp"
-            android:src="@drawable/baseline_more_time_24" />
-
-        <ImageView
-            android:id="@+id/imageViewPlayBtn"
-            android:layout_width="100dp"
-            android:layout_height="69dp"
-            android:src="@drawable/baseline_play_arrow_24" />
-
-
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homerecyclerview"
         android:layout_width="match_parent"

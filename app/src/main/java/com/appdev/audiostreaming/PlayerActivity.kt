@@ -8,8 +8,8 @@ import com.google.firebase.storage.FirebaseStorage
 
 
 class PlayerActivity : AppCompatActivity() {
-    var txtName: TextView? = null
-    var txtArtist: TextView? = null
+    private var txtName: TextView? = null
+    private var txtArtist: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

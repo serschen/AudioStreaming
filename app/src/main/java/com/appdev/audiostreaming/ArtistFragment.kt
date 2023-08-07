@@ -20,10 +20,10 @@ private const val ARG_PARAM1 = "artistId"
 class ArtistFragment : Fragment() {
     private var artistId: String? = null
 
-    lateinit var txtArtistName:TextView
-    lateinit var txtBiography:TextView
-    lateinit var ivArtist:ImageView
-    lateinit var rvCollections:RecyclerView
+    private lateinit var txtArtistName:TextView
+    private lateinit var txtBiography:TextView
+    private lateinit var ivArtist:ImageView
+    private lateinit var rvCollections:RecyclerView
 
     private lateinit var viewModel: MyViewModel
 
@@ -75,6 +75,7 @@ class ArtistFragment : Fragment() {
                 val songAdapter = ArtistCollectionAdapter(requireActivity().supportFragmentManager, viewModel, collections)
 
                 rvCollections.adapter = songAdapter
+
             }
     }
 

@@ -5,8 +5,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
-import android.util.Log
-import com.appdev.audiostreaming.*
 import com.google.firebase.storage.FirebaseStorage
 
 class AudioPlayerService : Service() {
@@ -72,7 +70,7 @@ class AudioPlayerService : Service() {
     private fun back(){
         player.pause()
         time = player.currentPosition
-        time = time - 15000
+        time -= 15000
         if(time < 0) time = 0
         player.seekTo(time)
         player.start()
@@ -81,7 +79,7 @@ class AudioPlayerService : Service() {
     private fun forward(){
         player.pause()
         time = player.currentPosition
-        time = time + 15000
+        time += 15000
         if(time > player.duration) time = player.duration
         player.seekTo(time)
         player.start()
