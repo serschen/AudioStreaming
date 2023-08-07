@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -17,9 +18,9 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
 
 class SearchFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
-    lateinit var searchBar: TextView
+    private lateinit var searchBar: TextView
+
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,8 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_search, container, false)
+
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         searchBar = v.findViewById(R.id.txtSongSuche)
         searchBar.addTextChangedListener(object : TextWatcher {
@@ -70,6 +73,8 @@ class SearchFragment : Fragment() {
                 val songAdapter = SearchAdapter(songs, albums, artists, requireActivity().supportFragmentManager)
 
                 rwChat.adapter = songAdapter
+
+                viewModel.currentPlaylist.value = songs
             }
     }
 }
