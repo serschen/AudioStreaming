@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -63,11 +62,11 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onSwipeUp() {
                 super.onSwipeUp()
-                Toast.makeText(this@MainActivity, "Swipe up gesture detected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MainActivity, "Swipe up gesture detected", Toast.LENGTH_SHORT).show()
             }
             override fun onSwipeDown() {
                 super.onSwipeDown()
-                Toast.makeText(this@MainActivity, "Swipe down gesture detected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MainActivity, "Swipe down gesture detected", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -79,8 +78,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.theme.observe(this, Observer{
             if(it == Themes.ALTERNATE){
                 bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home__3_)
+                bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.retro_search)
+                bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.retro_library__2_)
+
+
             }else if(it == Themes.MODERN){
                 bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.baseline_home_24)
+                bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.baseline_search_24)
+                bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.baseline_local_library_24)
+
             }
         })
 

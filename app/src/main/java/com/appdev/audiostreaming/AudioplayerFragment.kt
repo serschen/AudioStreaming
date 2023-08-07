@@ -19,13 +19,29 @@ class AudioplayerFragment : Fragment() {
 
     private lateinit var viewModel: MyViewModel
 
+    private lateinit var _artist_name: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_audioplayer, container, false)
+        _artist_name = v?.findViewById(R.id.artist_name)!!
+
+
+        _artist_name.setOnClickListener {
+          /*  val artistId = viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it) }?.get("artistId").toString()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.add(android.R.id.content , ArtistFragment.newInstance(artistId))
+            transaction?.commit()
+
+
+           */
+
+        }
 
         activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = false
+
 
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
@@ -50,20 +66,26 @@ class AudioplayerFragment : Fragment() {
         }
 
         v.findViewById<ImageView>(R.id.animationViewHeart).setOnClickListener {
-            if(viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("fav").toString() } == ""){
+            if (viewModel.position.value?.let {
+                    viewModel.currentPlaylist.value?.get(it)?.get("fav").toString()
+                } == "") {
                 FirebaseFunctions.getInstance()
-                    .getHttpsCallable("heartSong?userId=" + Firebase.auth.currentUser?.uid +
-                            "&songId=" + viewModel.currentPlaylist.value?.get(viewModel.position.value!!)
-                                ?.get("id").toString())
+                    .getHttpsCallable(
+                        "heartSong?userId=" + Firebase.auth.currentUser?.uid +
+                                "&songId=" + viewModel.currentPlaylist.value?.get(viewModel.position.value!!)
+                            ?.get("id").toString()
+                    )
                     .call()
                     .addOnFailureListener {
                         Log.wtf("tag", it)
                     }
-            }else{
+            } else {
                 FirebaseFunctions.getInstance()
-                    .getHttpsCallable("unheartSong?userId=" + Firebase.auth.currentUser?.uid +
-                            "&id=" + viewModel.currentPlaylist.value?.get(viewModel.position.value!!)
-                        ?.get("fav").toString())
+                    .getHttpsCallable(
+                        "unheartSong?userId=" + Firebase.auth.currentUser?.uid +
+                                "&id=" + viewModel.currentPlaylist.value?.get(viewModel.position.value!!)
+                            ?.get("fav").toString()
+                    )
                     .call()
                     .addOnFailureListener {
                         Log.wtf("tag", it)

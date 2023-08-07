@@ -1,6 +1,5 @@
 package com.appdev.audiostreaming
 
-import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -30,7 +29,7 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val v = inflater.inflate(R.layout.fragment_setting, container, false)
         changeThemeBtn = v?.findViewById(R.id.btn_change_theme)!!
 
