@@ -3,16 +3,19 @@ package com.appdev.audiostreaming
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
 
@@ -20,6 +23,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var settingsImage: ImageView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var username: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,18 @@ class HomeFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_home, container, false)
         recyclerView = v?.findViewById(R.id.homerecyclerview)!!
+
+
+
+
+        username = v?.findViewById(R.id.u_name)!!
+        val name = Firebase.auth.currentUser?.displayName
+        if(name != null){
+            username.text = name.toString()
+        } else {
+            username.text = "User XYZ"
+            Log.d("HomeFragment", "Username could not be found")
+        }
 
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
