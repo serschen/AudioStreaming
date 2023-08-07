@@ -1,17 +1,18 @@
 package com.appdev.audiostreaming
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 
 
-class SongAdapter(private val viewModel: MyViewModel, private val songs: ArrayList<HashMap<String, Any>>, private var showPicture: Boolean) :
+class SongAdapter(private val supportFragmentManager: FragmentManager, private val viewModel: MyViewModel, private val songs: ArrayList<HashMap<String, Any>>, private var showPicture: Boolean) :
     RecyclerView.Adapter<SongAdapter.ViewHolder>() {
 
     private lateinit var listText: TextView
@@ -35,6 +36,12 @@ class SongAdapter(private val viewModel: MyViewModel, private val songs: ArrayLi
         return ViewHolder(view)
     }
 
+    private fun loadFragment(fragment: Fragment){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.commit()
+    }
+
     override fun getItemCount(): Int {
         return this.songs.size
     }
@@ -54,16 +61,11 @@ class SongAdapter(private val viewModel: MyViewModel, private val songs: ArrayLi
 
             holder.searchResultLayout.setOnClickListener { v ->
                 viewModel.position.value = position
-                val intent = Intent(v.context, AudioPlayerService::class.java)
-                intent.action = "play"
-                val temp = viewModel.position.value?.let { it1 ->
-                    viewModel.currentPlaylist.value?.get(
-                        it1
-                    )?.get("path")
-                }
-                intent.putExtra("path", temp.toString())
-
-                v.context.startService(intent)
+                viewModel.isPlaying.value = true
+                val position = viewModel.position.value
+                viewModel.title.value = position?.let { viewModel.currentPlaylist.value?.get(it)?.get("name").toString() }
+                viewModel.artist.value = position?.let { viewModel.currentPlaylist.value?.get(it)?.get("artistName").toString() }
+                loadFragment(AudioplayerFragment())
             }
 
             //https://medium.com/@manuchekhrdev/lottie-animation-in-android-using-kotlin-8ff5d07f5f23#:~:text=Lottie%20is%20a%20library%20that,back%20natively%20on%20Android%20devices.

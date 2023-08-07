@@ -1,49 +1,57 @@
 package com.appdev.audiostreaming
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.google.firebase.storage.FirebaseStorage
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 class AudioplayerFragment : Fragment() {
-    var txtName: TextView? = null
-    var txtArtist: TextView? = null
+
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_audioplayer, container, false)
-        txtName = v.findViewById(R.id.textView6)
-        txtArtist = v.findViewById(R.id.textView11)
 
-        val extras = requireActivity().intent.extras
+        activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = false
 
-        if (extras != null) {
-            val song: Map<String, Any> = extras.getSerializable("map") as Map<String, Any>
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
-            txtName?.text = song["name"]?.toString() ?: "Name not found"
-            txtArtist?.text = song["artistName"]?.toString() ?: "Artist not found"
-
-            val path = song["path"]?.toString() ?: ""
-
-            if (path != "") {
-                val storage = FirebaseStorage.getInstance()
-                storage.reference.child(path).downloadUrl.addOnSuccessListener {
-                    val mediaPlayer = MediaPlayer()
-                    mediaPlayer.setDataSource(it.toString())
-                    mediaPlayer.setOnPreparedListener { player ->
-                        player.start()
-                    }
-                    mediaPlayer.prepareAsync()
-                }
+        viewModel.isPlaying.observe(requireActivity(), {
+            val playButton = v.findViewById<ImageView>(R.id.play_button)
+            if (viewModel.isPlaying.value == true) {
+                playButton.setImageResource(R.drawable.pause)
+            } else {
+                playButton.setImageResource(R.drawable.baseline_play_arrow_24)
             }
-        }
+        })
+
+        v.findViewById<TextView>(R.id.song_title).text = viewModel.title.value
+        v.findViewById<TextView>(R.id.artist_name).text = viewModel.artist.value
+
+        viewModel.title.observe(requireActivity(), {
+            v.findViewById<TextView>(R.id.song_title).text = viewModel.title.value
+        })
+
+        viewModel.artist.observe(requireActivity(), {
+            v.findViewById<TextView>(R.id.artist_name).text = viewModel.artist.value
+        })
 
         return v
     }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = true
+    }
+
 }
