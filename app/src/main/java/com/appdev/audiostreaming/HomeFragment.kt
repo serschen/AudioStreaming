@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
             val rwChat: RecyclerView = v.findViewById(R.id.homerecyclerview)
             rwChat.layoutManager = LinearLayoutManager(context)
 
-            val songAdapter = SongAdapter(viewModel, itemList, true)
+            val songAdapter = SongAdapter(requireActivity().supportFragmentManager, viewModel, itemList, true)
 
             rwChat.adapter = songAdapter
         })

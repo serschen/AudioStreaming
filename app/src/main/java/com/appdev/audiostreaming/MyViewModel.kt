@@ -13,10 +13,15 @@ class MyViewModel: ViewModel() {
     var isPlaying: MutableLiveData<Boolean> = MutableLiveData()
     var theme: MutableLiveData<Themes> = MutableLiveData()
 
+    var title: MutableLiveData<String> = MutableLiveData()
+    var artist: MutableLiveData<String> = MutableLiveData()
+
     init {
         getAllSongs()
         position.value = 0
         isPlaying.value = false
+        title.value = ""
+        artist.value = ""
     }
 
     fun getAllSongs(){
