@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +25,7 @@ class LibraryFragment : Fragment() {
     }
 
     private lateinit var viewModel: MyViewModel
-    private lateinit var songNum: TextView
+    private lateinit var txt: TextView
     private lateinit var rvFav: RecyclerView
 
     override fun onCreateView(
@@ -35,15 +34,14 @@ class LibraryFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_library, container, false)
 
-        songNum = v?.findViewById(R.id.numSongs)!!
+        txt = v?.findViewById(R.id.numSongs)!!
 
         rvFav= v?.findViewById(R.id.rvFav)!!
-        if(rvFav != null){
-            songNum.text = rvFav.size.toString()
-        } else {
-            songNum.text = "0"
-            Log.d("LibraryFragment", "Username could not be found")
-        }
+
+        val itemCount = rvFav.adapter?.itemCount ?: 0
+        txt.text = itemCount.toString()
+
+
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
 
