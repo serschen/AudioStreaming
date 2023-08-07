@@ -25,6 +25,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.appdev.audiostreaming.R.id.linearLayout
 import com.appdev.audiostreaming.R.layout.activity_main
@@ -324,25 +325,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateNotification(title: String, artist: String, isPlaying: Boolean) {
-        val prevIntent = createPendingIntent("prev")
         val backIntent = createPendingIntent("back")
         val playIntent = createPendingIntent("play")
-        val forwIntent = createPendingIntent("forw")
-        val nextIntent = createPendingIntent("next")
+        val pauseIntent = createPendingIntent("pause")
+        val forwIntent = createPendingIntent("forward")
 
         val builder = NotificationCompat.Builder(this, "channel_id")
             .setContentTitle(title)
             .setContentText(artist)
             .setSmallIcon(R.drawable.ic_launcher_background)
-            .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevIntent)
             .addAction(R.drawable.baseline_arrow_back_ios_24, "Back", backIntent)
             .addAction(if (isPlaying){
                 R.drawable.pause
             } else{
                 R.drawable.baseline_play_arrow_24
-            }, if(isPlaying) "Pause" else "Play", playIntent)
+            }, if(isPlaying) "Pause" else "Play", if(isPlaying) pauseIntent else playIntent)
             .addAction(R.drawable.baseline_arrow_forward_ios_24, "Forward", forwIntent)
-            .addAction(R.drawable.baseline_skip_next_24, "Next", nextIntent)
 
         val notificationManager = NotificationManagerCompat.from(this)
         if (ActivityCompat.checkSelfPermission(
