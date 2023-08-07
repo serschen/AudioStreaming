@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var username: TextView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
@@ -37,12 +40,21 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_home, container, false)
+        settingsImage = v?.findViewById(R.id.settings)!!
         recyclerView = v?.findViewById(R.id.homerecyclerview)!!
-
-
-
-
         username = v?.findViewById(R.id.u_name)!!
+
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
+        viewModel.theme.observe(viewLifecycleOwner , Observer{
+            if(it == Themes.ALTERNATE){
+             settingsImage.setImageResource(R.drawable.retro_settings)
+             recyclerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+
+            }else if(it == Themes.MODERN){
+                settingsImage.setImageResource(R.drawable.baseline_settings_24)
+                recyclerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+        })
         val name = Firebase.auth.currentUser?.displayName
         if(name != null){
             username.text = name.toString()
@@ -53,7 +65,7 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
-        settingsImage = v?.findViewById(R.id.settings)!!
+
         settingsImage.setOnClickListener {
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager!!.beginTransaction()

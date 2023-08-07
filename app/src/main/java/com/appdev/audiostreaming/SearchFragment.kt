@@ -1,15 +1,15 @@
 package com.appdev.audiostreaming
 
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.TransitionInflater
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +26,6 @@ class SearchFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
         enterTransition = inflater.inflateTransition(R.transition.slide)
-
     }
 
     override fun onCreateView(
@@ -53,16 +52,18 @@ class SearchFragment : Fragment() {
         return v
     }
 
-    private fun search(s: CharSequence?, v:View) {
+    private fun search(s: CharSequence?, v: View) {
         FirebaseFunctions.getInstance()
-            .getHttpsCallable("search?userId=" + Firebase.auth.currentUser?.uid +
-            "&subject=" + s.toString())
+            .getHttpsCallable(
+                "search?userId=" + Firebase.auth.currentUser?.uid +
+                        "&subject=" + s.toString()
+            )
             .call()
             .addOnFailureListener {
                 Log.wtf("tag", it)
             }
             .addOnSuccessListener {
-                if(activity != null) {
+                if (activity != null) {
                     val data: HashMap<String, Any> = it.data as HashMap<String, Any>
                     val songs: ArrayList<HashMap<String, Any>> =
                         data["songs"] as ArrayList<HashMap<String, Any>>
@@ -81,9 +82,9 @@ class SearchFragment : Fragment() {
                         requireActivity().supportFragmentManager
                     )
 
-                rwChat.adapter = songAdapter
+                    rwChat.adapter = songAdapter
 
-                viewModel.currentPlaylist.value = songs
+                    viewModel.currentPlaylist.value = songs
                 }
             }
     }

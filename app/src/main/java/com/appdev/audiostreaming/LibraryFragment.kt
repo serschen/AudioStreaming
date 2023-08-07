@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +45,14 @@ class LibraryFragment : Fragment() {
 
 
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
+        viewModel.theme.observe(viewLifecycleOwner , Observer{
+            if(it == Themes.ALTERNATE){
+                rvFav.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
 
+            }else if(it == Themes.MODERN){
+                rvFav.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+        })
 
         FirebaseFunctions.getInstance()
             .getHttpsCallable("getHeartedSongs?userId=" + Firebase.auth.currentUser?.uid)

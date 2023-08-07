@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
     //Gestures
 
     private lateinit var layout: LinearLayout
@@ -60,6 +61,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(activity_main)
         layout = findViewById(linearLayout)
         playBtn = findViewById(R.id.play_button)
+        forward = findViewById(R.id.forward_button)
+        back = findViewById(R.id.back_button)
+        next = findViewById(R.id.next_button)
+        prev = findViewById(R.id.previous_button)
+
+
 
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
@@ -81,21 +88,29 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-      //  controlSound(currentSong[0])
-
         viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
 
         viewModel.theme.observe(this, Observer{
             if(it == Themes.ALTERNATE){
-                bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home__3_)
-                bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.retro_search)
-                bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.retro_library__2_)
+                bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home)
+                bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.retro_search_1)
+                bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.retro_libicon)
                 playBtn.setImageResource(R.drawable.retro_play)
+                playBtn.setImageResource(R.drawable.retro_pause)
+                back.setImageResource(R.drawable.back)
+                forward.setImageResource(R.drawable.retro_forward)
+                next.setImageResource(R.drawable.retro_next)
+                prev.setImageResource(R.drawable.retro_prev)
+
             }else if(it == Themes.MODERN){
                 bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.baseline_home_24)
                 bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.baseline_search_24)
                 bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.baseline_local_library_24)
-
+                playBtn.setImageResource(R.drawable.baseline_play_arrow_24)
+                back.setImageResource(R.drawable.baseline_skip_previous_24)
+                forward.setImageResource(R.drawable.baseline_skip_next_24)
+                next.setImageResource(R.drawable.baseline_arrow_forward_ios_24)
+                prev.setImageResource(R.drawable.baseline_arrow_back_ios_24)
             }
         })
 

@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
@@ -18,8 +21,12 @@ import com.google.firebase.ktx.Firebase
 class AudioplayerFragment : Fragment() {
 
     private lateinit var viewModel: MyViewModel
-
     private lateinit var _artist_name: TextView
+    private lateinit var playBtn: ImageView
+    private lateinit var forward: ImageView
+    private lateinit var back: ImageView
+    private lateinit var next: ImageView
+    private lateinit var prev: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,11 +53,31 @@ class AudioplayerFragment : Fragment() {
             transaction.add(android.R.id.content , ArtistFragment.newInstance(artistId ?: ""))
             transaction.commit()
         }
-
         activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = false
-
-
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
+        playBtn = v?.findViewById(R.id.play_button)!!
+        forward = v?.findViewById(R.id.forward)!!
+        back = v?.findViewById(R.id.back)!!
+        next = v?.findViewById(R.id.next)!!
+        prev = v?.findViewById(R.id.prev)!!
+
+        viewModel.theme.observe(viewLifecycleOwner , Observer{
+            if(it == Themes.ALTERNATE){
+                playBtn.setImageResource(R.drawable.retro_play)
+                playBtn.setImageResource(R.drawable.retro_pause)
+                back.setImageResource(R.drawable.back)
+                next.setImageResource(R.drawable.retro_forward)
+                forward.setImageResource(R.drawable.retro_next)
+                prev.setImageResource(R.drawable.retro_prev)
+
+            }else if(it == Themes.MODERN){
+                playBtn.setImageResource(R.drawable.baseline_play_arrow_24)
+                back.setImageResource(R.drawable.baseline_skip_previous_24)
+                forward.setImageResource(R.drawable.baseline_skip_next_24)
+                next.setImageResource(R.drawable.baseline_arrow_forward_ios_24)
+                prev.setImageResource(R.drawable.baseline_arrow_back_ios_24)
+            }
+        })
 
         viewModel.isPlaying.observe(requireActivity()) {
             val playButton = v.findViewById<ImageView>(R.id.play_button)
