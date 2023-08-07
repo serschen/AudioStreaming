@@ -18,9 +18,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
 
 class SearchFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
-    lateinit var searchBar: TextView
+    private lateinit var searchBar: TextView
 
     private lateinit var viewModel: MyViewModel
 

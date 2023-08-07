@@ -53,12 +53,12 @@ class SongAdapter(private val supportFragmentManager: FragmentManager, private v
         holder.txtName?.text = songs[position]["name"].toString()
         holder.txtArtist?.text = songs[position]["artistName"].toString()
 
-        holder.searchResultLayout.setOnClickListener { v ->
+        holder.searchResultLayout.setOnClickListener {
             if (!showPicture) {
                 holder.img.visibility = View.GONE
             }
 
-            holder.searchResultLayout.setOnClickListener { v ->
+            holder.searchResultLayout.setOnClickListener {
                 viewModel.position.value = position
                 viewModel.isPlaying.value = true
                 val position = viewModel.position.value

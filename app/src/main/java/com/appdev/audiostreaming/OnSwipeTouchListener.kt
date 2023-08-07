@@ -1,4 +1,4 @@
-package app.com.kotlinapp
+package com.appdev.audiostreaming
 import android.content.Context
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener

@@ -13,9 +13,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class SettingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var changeThemeBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +21,7 @@ class SettingFragment : Fragment() {
 
         val s = Firebase.auth.currentUser?.displayName
 
-        Log.d("SettingsFragment", "${s}")
+        Log.d("SettingsFragment", "$s")
     }
 
     override fun onCreateView(

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -30,28 +29,27 @@ class AudioplayerFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
-        viewModel.isPlaying.observe(requireActivity(), {
+        viewModel.isPlaying.observe(requireActivity()) {
             val playButton = v.findViewById<ImageView>(R.id.play_button)
             if (viewModel.isPlaying.value == true) {
                 playButton.setImageResource(R.drawable.pause)
             } else {
                 playButton.setImageResource(R.drawable.baseline_play_arrow_24)
             }
-        })
+        }
 
         v.findViewById<TextView>(R.id.song_title).text = viewModel.title.value
         v.findViewById<TextView>(R.id.artist_name).text = viewModel.artist.value
 
-        viewModel.title.observe(requireActivity(), {
+        viewModel.title.observe(requireActivity()) {
             v.findViewById<TextView>(R.id.song_title).text = viewModel.title.value
-        })
+        }
 
-        viewModel.artist.observe(requireActivity(), {
+        viewModel.artist.observe(requireActivity()) {
             v.findViewById<TextView>(R.id.artist_name).text = viewModel.artist.value
-        })
+        }
 
         v.findViewById<ImageView>(R.id.animationViewHeart).setOnClickListener {
-            val likeButton = activity?.findViewById<ImageView>(R.id.animationViewHeart)
             if(viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("fav").toString() } == ""){
                 FirebaseFunctions.getInstance()
                     .getHttpsCallable("heartSong?userId=" + Firebase.auth.currentUser?.uid +

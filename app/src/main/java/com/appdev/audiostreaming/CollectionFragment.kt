@@ -25,9 +25,9 @@ class CollectionFragment : Fragment() {
     private var artistName: String? = null
     private var collectionName: String? = null
 
-    lateinit var txtName:TextView
-    lateinit var txtArtist:TextView
-    lateinit var btnClose: Button
+    private lateinit var txtName:TextView
+    private lateinit var txtArtist:TextView
+    private lateinit var btnClose: Button
 
     private lateinit var viewModel: MyViewModel
 
@@ -48,8 +48,8 @@ class CollectionFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
-        txtName = v.findViewById<TextView>(R.id.collectionName)
-        txtArtist = v.findViewById<TextView>(R.id.collectionArtist)
+        txtName = v.findViewById(R.id.collectionName)
+        txtArtist = v.findViewById(R.id.collectionArtist)
 
         txtName.text = artistName ?: "Name undefined"
         txtArtist.text = collectionName ?: "Artist undefined"
@@ -101,7 +101,7 @@ class CollectionFragment : Fragment() {
             }
     }
 
-    fun close(){
+    private fun close(){
         requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
     }
 }
