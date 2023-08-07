@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class SettingFragment : Fragment() {
     private lateinit var changeThemeBtn: Button
+    private lateinit var viewModel:MyViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inflater = TransitionInflater.from(requireContext())
@@ -32,9 +34,14 @@ class SettingFragment : Fragment() {
         val v = inflater.inflate(R.layout.fragment_setting, container, false)
         changeThemeBtn = v?.findViewById(R.id.btn_change_theme)!!
 
-        changeThemeBtn.setOnClickListener{
-            v.setBackgroundColor(Color.LTGRAY)
+        viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
+        changeThemeBtn.setOnClickListener{
+            if(viewModel.theme.value == Themes.ALTERNATE){
+                viewModel.theme.value = Themes.MODERN
+            }else{
+                viewModel.theme.value = Themes.ALTERNATE
+            }
         }
         v.findViewById<Button>(R.id.btnLogoutSettings).setOnClickListener {
             logout()

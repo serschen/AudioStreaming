@@ -62,19 +62,29 @@ class SearchFragment : Fragment() {
                 Log.wtf("tag", it)
             }
             .addOnSuccessListener {
-                val data:HashMap<String, Any> = it.data as HashMap<String, Any>
-                val songs:ArrayList<HashMap<String, Any>> = data["songs"] as ArrayList<HashMap<String, Any>>
-                val albums:ArrayList<HashMap<String, Any>> = data["collections"] as ArrayList<HashMap<String, Any>>
-                val artists:ArrayList<HashMap<String, Any>> = data["artists"] as ArrayList<HashMap<String, Any>>
+                if(activity != null) {
+                    val data: HashMap<String, Any> = it.data as HashMap<String, Any>
+                    val songs: ArrayList<HashMap<String, Any>> =
+                        data["songs"] as ArrayList<HashMap<String, Any>>
+                    val albums: ArrayList<HashMap<String, Any>> =
+                        data["collections"] as ArrayList<HashMap<String, Any>>
+                    val artists: ArrayList<HashMap<String, Any>> =
+                        data["artists"] as ArrayList<HashMap<String, Any>>
 
-                val rwChat: RecyclerView = v.findViewById(R.id.searchrecycler)
-                rwChat.layoutManager = LinearLayoutManager(context)
+                    val rwChat: RecyclerView = v.findViewById(R.id.searchrecycler)
+                    rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = SearchAdapter(songs, albums, artists, requireActivity().supportFragmentManager)
+                    val songAdapter = SearchAdapter(
+                        songs,
+                        albums,
+                        artists,
+                        requireActivity().supportFragmentManager
+                    )
 
                 rwChat.adapter = songAdapter
 
                 viewModel.currentPlaylist.value = songs
+                }
             }
     }
 }
