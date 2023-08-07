@@ -36,7 +36,7 @@ class LibraryFragment : Fragment() {
 
         txt = v?.findViewById(R.id.numSongs)!!
 
-        rvFav= v?.findViewById(R.id.rvFav)!!
+        rvFav = v?.findViewById(R.id.rvFav)!!
 
         val itemCount = rvFav.adapter?.itemCount ?: 0
         txt.text = itemCount.toString()
@@ -52,7 +52,7 @@ class LibraryFragment : Fragment() {
                 Log.wtf("tag", it)
             }
             .addOnSuccessListener {
-                if(activity != null) {
+                if (activity != null) {
                     val itemList: ArrayList<HashMap<String, Any>> =
                         it.data as ArrayList<HashMap<String, Any>>
 
@@ -66,9 +66,9 @@ class LibraryFragment : Fragment() {
                         true
                     )
 
-                rwChat.adapter = songAdapter
+                    rwChat.adapter = songAdapter
 
-                viewModel.currentPlaylist.value = itemList
+                    viewModel.currentPlaylist.value = itemList
                 }
             }
 
