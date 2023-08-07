@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ArtistCollectionAdapter(private val data:ArrayList<HashMap<String, Any>>): RecyclerView.Adapter<ArtistCollectionAdapter.ViewHolder>() {
+class ArtistCollectionAdapter(private val viewModel: MyViewModel, private val data:ArrayList<HashMap<String, Any>>): RecyclerView.Adapter<ArtistCollectionAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val img: ImageView = itemView.findViewById<ImageView>(R.id.imgArtistCollection)
         val txtName: TextView = itemView.findViewById<TextView>(R.id.txtCollectionName)
@@ -30,7 +30,7 @@ class ArtistCollectionAdapter(private val data:ArrayList<HashMap<String, Any>>):
 
         val itemList = data[position]["songs"] as ArrayList<HashMap<String, Any>>
 
-        val songAdapter = SongAdapter(itemList, false)
+        val songAdapter = SongAdapter(viewModel, itemList, true)
 
         holder.rvSongs.adapter = songAdapter
     }

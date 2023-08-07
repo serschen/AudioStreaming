@@ -36,10 +36,8 @@
             android:name=".LoginActivity"
             android:exported="true">
         </activity>
-        <receiver android:name=".lukas.NotificationReceiver"/>
-        <service android:name=".lukas.AudioPlayerService"/>
-        <receiver android:name="com.example.as.NotificationReceiver"/>
-        <service android:name=".lukas.AudioPlayerService"/>
+        <receiver android:name=".NotificationReceiver"/>
+        <service android:name=".AudioPlayerService"/>
     </application>
 
 </manifest>
