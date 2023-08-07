@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -74,6 +77,14 @@ class MainActivity : AppCompatActivity() {
       //  controlSound(currentSong[0])
 
         viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
+
+        viewModel.theme.observe(this, Observer{
+            if(it == Themes.ALTERNATE){
+                bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home__3_)
+            }else if(it == Themes.MODERN){
+                bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.baseline_home_24)
+            }
+        })
 
         val filter = IntentFilter(ACTION_UPDATE_UI)
         registerReceiver(updateUIReceiver, filter)

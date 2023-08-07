@@ -11,6 +11,7 @@ class MyViewModel: ViewModel() {
     var currentPlaylist: MutableLiveData<ArrayList<HashMap<String, Any>>> = MutableLiveData()
     var position: MutableLiveData<Int> = MutableLiveData()
     var isPlaying: MutableLiveData<Boolean> = MutableLiveData()
+    var theme: MutableLiveData<Themes> = MutableLiveData()
 
     init {
         getAllSongs()
@@ -29,5 +30,9 @@ class MyViewModel: ViewModel() {
                 val itemList:ArrayList<HashMap<String, Any>> = it.data as ArrayList<HashMap<String, Any>>
                 currentPlaylist.value = itemList
             }
+    }
+
+    fun changeTheme(theme:Themes){
+        this.theme.value = theme
     }
 }
