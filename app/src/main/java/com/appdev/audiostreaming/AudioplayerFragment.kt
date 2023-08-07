@@ -1,5 +1,6 @@
 package com.appdev.audiostreaming
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -17,10 +19,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 class AudioplayerFragment : Fragment() {
 
     private lateinit var viewModel: MyViewModel
+    private lateinit var img:ImageView
     private lateinit var _artist_name: TextView
     private lateinit var playBtn: ImageView
     private lateinit var forward: ImageView
@@ -43,6 +47,8 @@ class AudioplayerFragment : Fragment() {
             transaction?.commit()
 
         }
+
+        img = v.findViewById(R.id.imageView2)
 
          */
 
@@ -93,6 +99,7 @@ class AudioplayerFragment : Fragment() {
 
         viewModel.title.observe(requireActivity()) {
             v.findViewById<TextView>(R.id.song_title).text = viewModel.title.value
+            setImage()
         }
 
         viewModel.artist.observe(requireActivity()) {
@@ -110,6 +117,16 @@ class AudioplayerFragment : Fragment() {
                             ?.get("id").toString()
                     )
                     .call()
+                    .addOnSuccessListener {
+                        val id:String = it.data as String
+
+                        val list = viewModel.currentPlaylist.value
+                        val pos = viewModel.position.value ?: -1
+                        if(pos != -1) {
+                            list?.get(pos)?.set("fav", id)
+                            viewModel.currentPlaylist.value = list
+                        }
+                    }
                     .addOnFailureListener {
                         Log.wtf("tag", it)
                     }
@@ -121,6 +138,14 @@ class AudioplayerFragment : Fragment() {
                             ?.get("fav").toString()
                     )
                     .call()
+                    .addOnSuccessListener {
+                        val list = viewModel.currentPlaylist.value
+                        val pos = viewModel.position.value ?: -1
+                        if(pos != -1) {
+                            list?.get(pos)?.set("fav", "")
+                            viewModel.currentPlaylist.value = list
+                        }
+                    }
                     .addOnFailureListener {
                         Log.wtf("tag", it)
                     }
@@ -135,4 +160,25 @@ class AudioplayerFragment : Fragment() {
         activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = true
     }
 
+    fun setImage(){
+        if(viewModel.currentPlaylist.value?.size!! > 0) {
+            val storageReference = FirebaseStorage.getInstance().reference
+            val path: String = viewModel.position.value?.let {
+                viewModel.currentPlaylist.value?.get(it)?.get("imagePath")
+            }.toString()
+            val photoReference = storageReference.child(path)
+
+            val ONE_MEGABYTE = (1024 * 1024).toLong()
+            photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
+                val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                img.setImageBitmap(bmp)
+            }.addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "No Such file or Path found!!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
 }

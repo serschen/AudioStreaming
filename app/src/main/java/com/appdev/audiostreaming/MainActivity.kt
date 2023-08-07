@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -157,6 +159,7 @@ class MainActivity : AppCompatActivity() {
                     )?.get("path")
                 }
                 intent.putExtra("path", temp.toString())
+                setImage()
             } else {
                 playButton.setImageResource(R.drawable.baseline_play_arrow_24)
                 intent.action = "pause"
@@ -428,5 +431,23 @@ class MainActivity : AppCompatActivity() {
 
     fun onMusicbarClicked(view: View) {
         loadFragment(AudioplayerFragment())
+    }
+
+    fun setImage(){
+        val storageReference = FirebaseStorage.getInstance().reference
+        val path:String = viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("imagePath") }.toString()
+        val photoReference = storageReference.child(path)
+
+        val ONE_MEGABYTE = (1024 * 1024).toLong()
+        photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
+            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            findViewById<ImageView>(R.id.song_pic).setImageBitmap(bmp)
+        }.addOnFailureListener {
+            Toast.makeText(
+                this,
+                "No Such file or Path found!!",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 }

@@ -74,17 +74,22 @@ class CollectionFragment : Fragment() {
                     Log.wtf("tag", it)
                 }
                 .addOnSuccessListener {
-                    val itemList: ArrayList<HashMap<String, Any>> =
-                        it.data as ArrayList<HashMap<String, Any>>
+                    if(activity != null) {
+                        val itemList: ArrayList<HashMap<String, Any>> =
+                            it.data as ArrayList<HashMap<String, Any>>
 
-                    val rwChat: RecyclerView = v.findViewById(R.id.rvSongs)
-                    rwChat.layoutManager = LinearLayoutManager(context)
+                        val rwChat: RecyclerView = v.findViewById(R.id.rvSongs)
+                        rwChat.layoutManager = LinearLayoutManager(context)
 
-                    val songAdapter = SongAdapter(requireActivity().supportFragmentManager, viewModel, itemList, false)
+                        val songAdapter = SongAdapter(
+                            requireActivity().supportFragmentManager,
+                            viewModel,
+                            itemList,
+                            false
+                        )
 
-                    rwChat.adapter = songAdapter
-
-                    viewModel.currentPlaylist.value = itemList
+                        rwChat.adapter = songAdapter
+                    }
                 }
         }
     }

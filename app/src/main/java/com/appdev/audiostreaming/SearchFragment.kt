@@ -79,12 +79,11 @@ class SearchFragment : Fragment() {
                         songs,
                         albums,
                         artists,
-                        requireActivity().supportFragmentManager
+                        requireActivity().supportFragmentManager,
+                        viewModel
                     )
 
-                    rwChat.adapter = songAdapter
-
-                    viewModel.currentPlaylist.value = songs
+                rwChat.adapter = songAdapter
                 }
             }
     }
