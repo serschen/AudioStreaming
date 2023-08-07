@@ -54,11 +54,11 @@ class MainActivity : AppCompatActivity() {
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                Toast.makeText(this@MainActivity, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show()
+                previous()
             }
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                Toast.makeText(this@MainActivity, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show()
+                next()
             }
             override fun onSwipeUp() {
                 super.onSwipeUp()
@@ -233,6 +233,9 @@ class MainActivity : AppCompatActivity() {
     /////////////////////////////////////
 
     fun onPreviousCLicked(view: View) {
+        previous()
+    }
+    private fun previous(){
         AudioPlayerService.time = 0
 
         var position = viewModel.position.value?.minus(1)
@@ -274,6 +277,9 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
     }
     fun onNextClicked(view: View) {
+        next()
+    }
+    private fun next(){
         AudioPlayerService.time = 0
 
         var position = viewModel.position.value?.plus(1)

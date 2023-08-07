@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -49,6 +50,29 @@ class AudioplayerFragment : Fragment() {
             v.findViewById<TextView>(R.id.artist_name).text = viewModel.artist.value
         })
 
+        v.findViewById<ImageView>(R.id.animationViewHeart).setOnClickListener {
+            val likeButton = activity?.findViewById<ImageView>(R.id.animationViewHeart)
+            if(viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it)?.get("fav").toString() } == ""){
+                FirebaseFunctions.getInstance()
+                    .getHttpsCallable("heartSong?userId=" + Firebase.auth.currentUser?.uid +
+                            "&songId=" + viewModel.currentPlaylist.value?.get(viewModel.position.value!!)
+                                ?.get("id").toString())
+                    .call()
+                    .addOnFailureListener {
+                        Log.wtf("tag", it)
+                    }
+            }else{
+                FirebaseFunctions.getInstance()
+                    .getHttpsCallable("unheartSong?userId=" + Firebase.auth.currentUser?.uid +
+                            "&id=" + viewModel.currentPlaylist.value?.get(viewModel.position.value!!)
+                        ?.get("fav").toString())
+                    .call()
+                    .addOnFailureListener {
+                        Log.wtf("tag", it)
+                    }
+            }
+        }
+
         return v
     }
 
@@ -57,35 +81,4 @@ class AudioplayerFragment : Fragment() {
         activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = true
     }
 
-    private var isLiked: Boolean = false
-    fun onLike(view: View) {
-        val likeButton = activity?.findViewById<ImageView>(R.id.animationViewHeart)
-        if(isLiked){
-            FirebaseFunctions.getInstance()
-                .getHttpsCallable("https://us-central1-audio-streaming-7c505.cloudfunctions.net/heartSong?userId="+Firebase.auth.currentUser?.uid+"&songId="+ viewModel.position.value?.let {
-                    viewModel.currentPlaylist.value?.get(
-                        it
-                    )?.get("id")
-                })
-                .call()
-                .addOnFailureListener {
-                    Log.wtf("tag", it)
-                }.addOnSuccessListener {
-                    //TODO
-                }
-        }else{
-            FirebaseFunctions.getInstance()
-                .getHttpsCallable("https://us-central1-audio-streaming-7c505.cloudfunctions.net/unheartSong?id="+viewModel.position.value?.let {
-                    viewModel.currentPlaylist.value?.get(
-                        it
-                    )?.get("fav")
-                })
-                .call()
-                .addOnFailureListener {
-                    Log.wtf("tag", it)
-                }.addOnSuccessListener {
-                    //TODO
-                }
-        }
-    }
 }
