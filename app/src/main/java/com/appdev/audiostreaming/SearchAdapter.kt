@@ -36,7 +36,7 @@ class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
         //holder.txtName?.text = song.name
         //holder.txtArtist?.text = song.artistName
 
-        if(position < songs.size){
+        if(position < songs.size && songs.size != 0){
             holder.txtName?.text = songs[position]["name"].toString()
             holder.txtArtist?.text = songs[position]["artistName"].toString()
 
@@ -47,9 +47,9 @@ class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
                 intent.action = "chan"
                 v.context.startService(intent)
             }
-        }else if(position < (songs.size + albums.size)){
+        }else if(position < (songs.size + albums.size) && albums.size != 0){
             val pos = position - songs.size
-            val artistName = songs[pos]["artistName"].toString()
+            val artistName = albums[pos]["artistName"].toString()
             val albumName = albums[pos]["name"].toString()
             val type = albums[pos]["type"].toString()
             val id = albums[pos]["id"].toString()
@@ -62,7 +62,7 @@ class SearchAdapter(private val songs:ArrayList<HashMap<String, Any>>,
                 transaction.add(android.R.id.content , CollectionFragment.newInstance(id, artistName, albumName))
                 transaction.commit()
             }
-        }else {
+        }else if(artists.size != 0){
             val pos = position - (songs.size + albums.size)
             holder.txtName?.text = artists[pos]["name"].toString()
             holder.txtArtist?.text = "Artist"

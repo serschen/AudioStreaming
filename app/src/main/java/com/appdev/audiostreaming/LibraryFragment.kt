@@ -38,7 +38,6 @@ class LibraryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_library, container, false)
-
         viewModel = ViewModelProvider(requireActivity()).get(MyViewModel::class.java)
 
         FirebaseFunctions.getInstance()
@@ -48,15 +47,22 @@ class LibraryFragment : Fragment() {
                 Log.wtf("tag", it)
             }
             .addOnSuccessListener {
-                val itemList: ArrayList<HashMap<String, Any>> =
-                    it.data as ArrayList<HashMap<String, Any>>
+                if(activity != null) {
+                    val itemList: ArrayList<HashMap<String, Any>> =
+                        it.data as ArrayList<HashMap<String, Any>>
 
-                val rwChat: RecyclerView = v.findViewById(R.id.rvFav)
-                rwChat.layoutManager = LinearLayoutManager(context)
+                    val rwChat: RecyclerView = v.findViewById(R.id.rvFav)
+                    rwChat.layoutManager = LinearLayoutManager(context)
 
-                val songAdapter = SongAdapter(requireActivity().supportFragmentManager, viewModel, itemList, true)
+                    val songAdapter = SongAdapter(
+                        requireActivity().supportFragmentManager,
+                        viewModel,
+                        itemList,
+                        true
+                    )
 
-                rwChat.adapter = songAdapter
+                    rwChat.adapter = songAdapter
+                }
             }
 
         return v
