@@ -27,10 +27,6 @@ import androidx.lifecycle.ViewModelProvider
 import app.com.kotlinapp.OnSwipeTouchListener
 import com.appdev.audiostreaming.R.id.linearLayout
 import com.appdev.audiostreaming.R.layout.activity_main
-import com.appdev.audiostreaming.lukas.AudioPlayerService
-import com.example.`as`.NotificationReceiver
-import com.appdev.audiostreaming.lukas.AudioPlayerService
-import com.appdev.audiostreaming.lukas.NotificationReceiver
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
@@ -342,12 +338,6 @@ class MainActivity : AppCompatActivity() {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-    }
-
-    fun onMusicbarClicked(view: View) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container,SongInfoFragment())
-        transaction.commit()
     }
 
     companion object {

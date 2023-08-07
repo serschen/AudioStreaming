@@ -19,7 +19,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:padding="5dp"
-            app:srcCompat="@drawable/startscreen_note" />
+            app:srcCompat="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/txtCollectionName"

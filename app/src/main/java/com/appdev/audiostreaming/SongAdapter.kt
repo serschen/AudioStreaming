@@ -9,29 +9,22 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.appdev.audiostreaming.lukas.AudioPlayerService
 
 
-class SongAdapter(private val viewModel: MyViewModel, private val songs: ArrayList<HashMap<String, Any>>) :
+class SongAdapter(private val viewModel: MyViewModel, private val songs: ArrayList<HashMap<String, Any>>, private var showPicture: Boolean) :
     RecyclerView.Adapter<SongAdapter.ViewHolder>() {
 
     private lateinit var listText: TextView
     private lateinit var lottieAnimationView: LottieAnimationView
-import com.appdev.audiostreaming.lukas.AudioPlayerService
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtName: TextView? = itemView.findViewById(R.id.txtResultName)
         val txtArtist: TextView? = itemView.findViewById(R.id.txtResultArtist)
-        val searchResultLayout:LinearLayout = itemView.findViewById(R.id.searchResultLayout)
-        val img:ImageView = itemView.findViewById(R.id.imgArtistResult)
+        val searchResultLayout: LinearLayout = itemView.findViewById(R.id.searchResultLayout)
+        val img: ImageView = itemView.findViewById(R.id.imgArtistResult)
 
         //animation in Grid
 //        val animationView: LottieAnimationView = itemView.findViewById(R.id.animationView)
-
-        val txtName: TextView? = itemView.findViewById(R.id.txtName)
-        val txtArtist: TextView? = itemView.findViewById(R.id.txtArtist)
-        val searchResultLayout: LinearLayout = itemView.findViewById(R.id.searchResultLayout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -55,27 +48,28 @@ import com.appdev.audiostreaming.lukas.AudioPlayerService
         holder.txtArtist?.text = songs[position]["artistName"].toString()
 
         holder.searchResultLayout.setOnClickListener { v ->
-        if(!showPicture){
-            holder.img.visibility = View.GONE
-        }
-
-        holder.searchResultLayout.setOnClickListener{v ->
-            viewModel.position.value = position
-            val intent = Intent(v.context, AudioPlayerService::class.java)
-            intent.action = "play"
-            val temp = viewModel.position.value?.let { it1 ->
-                viewModel.currentPlaylist.value?.get(
-                    it1
-                )?.get("path")
+            if (!showPicture) {
+                holder.img.visibility = View.GONE
             }
-            intent.putExtra("path", temp.toString())
 
-            v.context.startService(intent)
+            holder.searchResultLayout.setOnClickListener { v ->
+                viewModel.position.value = position
+                val intent = Intent(v.context, AudioPlayerService::class.java)
+                intent.action = "play"
+                val temp = viewModel.position.value?.let { it1 ->
+                    viewModel.currentPlaylist.value?.get(
+                        it1
+                    )?.get("path")
+                }
+                intent.putExtra("path", temp.toString())
+
+                v.context.startService(intent)
+            }
+
+            //https://medium.com/@manuchekhrdev/lottie-animation-in-android-using-kotlin-8ff5d07f5f23#:~:text=Lottie%20is%20a%20library%20that,back%20natively%20on%20Android%20devices.
+            //  val item = songs[position]
+            // Set the Lottie animation for the view holder
+            // holder.animationView.playAnimation()
         }
-
-        //https://medium.com/@manuchekhrdev/lottie-animation-in-android-using-kotlin-8ff5d07f5f23#:~:text=Lottie%20is%20a%20library%20that,back%20natively%20on%20Android%20devices.
-      //  val item = songs[position]
-        // Set the Lottie animation for the view holder
-       // holder.animationView.playAnimation()
     }
 }

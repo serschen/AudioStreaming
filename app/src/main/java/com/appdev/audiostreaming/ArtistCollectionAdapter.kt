@@ -30,7 +30,7 @@ class ArtistCollectionAdapter(private val viewModel: MyViewModel, private val da
 
         val itemList = data[position]["songs"] as ArrayList<HashMap<String, Any>>
 
-        val songAdapter = SongAdapter(viewModel, itemList, false)
+        val songAdapter = SongAdapter(viewModel, itemList, true)
 
         holder.rvSongs.adapter = songAdapter
     }
