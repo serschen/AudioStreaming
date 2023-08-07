@@ -29,15 +29,22 @@ class AudioplayerFragment : Fragment() {
         _artist_name = v?.findViewById(R.id.artist_name)!!
 
 
-        _artist_name.setOnClickListener {
-          /*  val artistId = viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it) }?.get("artistId").toString()
+        /*_artist_name.setOnClickListener {
+            val artist = viewModel.position.value?.let { viewModel.currentPlaylist.value?.get(it) }?.get("artistId").toString()
             val transaction = fragmentManager?.beginTransaction()
-            transaction?.add(android.R.id.content , ArtistFragment.newInstance(artistId))
+            transaction?.add(android.R.id.content , ArtistFragment.newInstance(artist))
             transaction?.commit()
 
+        }
 
-           */
+         */
 
+        v.findViewById<TextView>(R.id.artist_name).setOnClickListener{
+            val artistId =
+                viewModel.position.value?.let { it1 -> viewModel.currentPlaylist.value?.get(it1)?.get("artist").toString() }
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.add(android.R.id.content , ArtistFragment.newInstance(artistId ?: ""))
+            transaction.commit()
         }
 
         activity?.findViewById<ConstraintLayout>(R.id.musicbar_container)?.isVisible = false

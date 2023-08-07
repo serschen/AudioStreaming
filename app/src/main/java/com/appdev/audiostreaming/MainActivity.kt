@@ -38,7 +38,16 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
    private lateinit var bottomNav: BottomNavigationView
     private var musicplayer: MediaPlayer? = null
-    private lateinit var playBtn: Button
+    private lateinit var playBtn: ImageView
+    private lateinit var forward: ImageView
+    private lateinit var back: ImageView
+    private lateinit var next: ImageView
+    private lateinit var prev: ImageView
+
+
+
+
+
 
     //Gestures
 
@@ -50,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(activity_main)
         layout = findViewById(linearLayout)
+        playBtn = findViewById(R.id.play_button)
 
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
@@ -80,8 +90,7 @@ class MainActivity : AppCompatActivity() {
                 bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home__3_)
                 bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.retro_search)
                 bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.retro_library__2_)
-
-
+                playBtn.setImageResource(R.drawable.retro_play)
             }else if(it == Themes.MODERN){
                 bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.baseline_home_24)
                 bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.baseline_search_24)
