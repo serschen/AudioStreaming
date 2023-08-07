@@ -14,12 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="34sp" />
+        android:textSize="34sp"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/collectionArtist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:padding="5dp"
         android:text="TextView" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -30,7 +35,9 @@
 
     <Button
         android:id="@+id/btnCloseCollection"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back" />
+        android:text="Back"
+        android:padding="5dp"
+        android:layout_marginLeft="146dp"/>
 </LinearLayout>

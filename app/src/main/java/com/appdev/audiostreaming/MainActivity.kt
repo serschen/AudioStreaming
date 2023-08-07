@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -39,7 +38,17 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
    private lateinit var bottomNav: BottomNavigationView
     private var musicplayer: MediaPlayer? = null
-    private lateinit var playBtn: Button
+    private lateinit var playBtn: ImageView
+    private lateinit var forward: ImageView
+    private lateinit var back: ImageView
+    private lateinit var next: ImageView
+    private lateinit var prev: ImageView
+
+
+
+
+
+
 
     //Gestures
 
@@ -51,6 +60,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(activity_main)
         layout = findViewById(linearLayout)
+        playBtn = findViewById(R.id.play_button)
+        forward = findViewById(R.id.forward_button)
+        back = findViewById(R.id.back_button)
+        next = findViewById(R.id.next_button)
+        prev = findViewById(R.id.previous_button)
+
+
 
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
@@ -63,24 +79,38 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onSwipeUp() {
                 super.onSwipeUp()
-                Toast.makeText(this@MainActivity, "Swipe up gesture detected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MainActivity, "Swipe up gesture detected", Toast.LENGTH_SHORT).show()
             }
             override fun onSwipeDown() {
                 super.onSwipeDown()
-                Toast.makeText(this@MainActivity, "Swipe down gesture detected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MainActivity, "Swipe down gesture detected", Toast.LENGTH_SHORT).show()
             }
         })
 
-
-      //  controlSound(currentSong[0])
 
         viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
 
         viewModel.theme.observe(this, Observer{
             if(it == Themes.ALTERNATE){
-                bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home__3_)
+                bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.retro_home)
+                bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.retro_search_1)
+                bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.retro_libicon)
+                playBtn.setImageResource(R.drawable.retro_play)
+                playBtn.setImageResource(R.drawable.retro_pause)
+                back.setImageResource(R.drawable.back)
+                forward.setImageResource(R.drawable.retro_forward)
+                next.setImageResource(R.drawable.retro_next)
+                prev.setImageResource(R.drawable.retro_prev)
+
             }else if(it == Themes.MODERN){
                 bottomNav.menu[0].icon = ContextCompat.getDrawable(this, R.drawable.baseline_home_24)
+                bottomNav.menu[1].icon = ContextCompat.getDrawable(this, R.drawable.baseline_search_24)
+                bottomNav.menu[2].icon = ContextCompat.getDrawable(this, R.drawable.baseline_local_library_24)
+                playBtn.setImageResource(R.drawable.baseline_play_arrow_24)
+                back.setImageResource(R.drawable.baseline_skip_previous_24)
+                forward.setImageResource(R.drawable.baseline_skip_next_24)
+                next.setImageResource(R.drawable.baseline_arrow_forward_ios_24)
+                prev.setImageResource(R.drawable.baseline_arrow_back_ios_24)
             }
         })
 
