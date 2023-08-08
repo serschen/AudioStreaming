@@ -34,6 +34,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 
 class MainActivity : AppCompatActivity() {

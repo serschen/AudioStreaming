@@ -66,15 +66,16 @@ class AudioplayerFragment : Fragment() {
         back = v?.findViewById(R.id.back)!!
         next = v?.findViewById(R.id.next)!!
         prev = v?.findViewById(R.id.prev)!!
+        img = v.findViewById(R.id.imageView2)
 
         viewModel.theme.observe(viewLifecycleOwner , Observer{
             if(it == Themes.ALTERNATE){
                 playBtn.setImageResource(R.drawable.retro_play)
                 playBtn.setImageResource(R.drawable.retro_pause)
-                back.setImageResource(R.drawable.back)
+                back.setImageResource(R.drawable.retro_prev)
                 next.setImageResource(R.drawable.retro_forward)
                 forward.setImageResource(R.drawable.retro_next)
-                prev.setImageResource(R.drawable.retro_prev)
+                prev.setImageResource(R.drawable.back)
 
             }else if(it == Themes.MODERN){
                 playBtn.setImageResource(R.drawable.baseline_play_arrow_24)
@@ -88,9 +89,17 @@ class AudioplayerFragment : Fragment() {
         viewModel.isPlaying.observe(requireActivity()) {
             val playButton = v.findViewById<ImageView>(R.id.play_button)
             if (viewModel.isPlaying.value == true) {
-                playButton.setImageResource(R.drawable.pause)
+                if(viewModel.theme.value == Themes.ALTERNATE) {
+                    playBtn.setImageResource(R.drawable.retro_pause)
+                }else {
+                    playButton.setImageResource(R.drawable.pause)
+                }
             } else {
-                playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+                if(viewModel.theme.value == Themes.ALTERNATE) {
+                    playButton.setImageResource(R.drawable.retro_play)
+                }else {
+                    playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+                }
             }
         }
 
@@ -161,7 +170,7 @@ class AudioplayerFragment : Fragment() {
     }
 
     fun setImage(){
-        if(viewModel.currentPlaylist.value?.size!! > 0) {
+        if(viewModel.currentPlaylist.value != null) {
             val storageReference = FirebaseStorage.getInstance().reference
             val path: String = viewModel.position.value?.let {
                 viewModel.currentPlaylist.value?.get(it)?.get("imagePath")

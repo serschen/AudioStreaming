@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
 
         viewModel.getAllSongs()
 
-        viewModel.currentPlaylist.observe(viewLifecycleOwner) {
+        viewModel.allSongs.observe(viewLifecycleOwner) {
             val itemList: ArrayList<HashMap<String, Any>> = it as ArrayList<HashMap<String, Any>>
 
             val rwChat: RecyclerView = v.findViewById(R.id.homerecyclerview)
