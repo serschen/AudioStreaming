@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".AudioplayerFragment">
@@ -21,10 +23,10 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationViewHeart"
-        android:onClick="onLike"
         android:layout_width="72dp"
         android:layout_height="55dp"
         android:layout_gravity="right|top"
+        android:onClick="onLike"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/animation_lkwlpi5k" />
@@ -64,38 +66,38 @@
 
         <ImageView
             android:id="@+id/prev"
-            android:onClick="onPreviousCLicked"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:onClick="onPreviousCLicked"
             android:src="@drawable/baseline_skip_previous_24" />
 
         <ImageView
             android:id="@+id/back"
-            android:onClick="onBackClicked"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:onClick="onBackClicked"
             android:src="@drawable/baseline_arrow_back_ios_24" />
 
         <ImageView
             android:id="@+id/play_button"
-            android:onClick="onPlayClicked"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:onClick="onPlayClicked"
             android:src="@drawable/baseline_play_arrow_24" />
 
         <ImageView
             android:id="@+id/forward"
-            android:onClick="onForwardClicked"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:onClick="onForwardClicked"
             android:src="@drawable/baseline_arrow_forward_ios_24" />
 
         <ImageView
             android:id="@+id/next"
 
-            android:onClick="onNextClicked"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:onClick="onNextClicked"
             android:src="@drawable/baseline_skip_next_24" />
 
     </LinearLayout>
